@@ -1,8 +1,9 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using static System.Console;
 
 namespace Shuffle3.Model
 {
+    //Todo - Add Method Documentation
     public class UserInterface : IUserInterface
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -10,7 +11,7 @@ namespace Shuffle3.Model
         [ExcludeFromCodeCoverage] //Cannot test for User Input
         public string GetUserInput()
         {
-            string input = Console.ReadLine();
+            string input = ReadLine();
             Logger.Info("User Typed {0}", input);
             return input;
         }
@@ -18,18 +19,19 @@ namespace Shuffle3.Model
         [ExcludeFromCodeCoverage] //Cannot test writing to console.
         public void RenderMessage(string message)
         {
-            Console.WriteLine(message);
+            WriteLine(message);
         }
 
         [ExcludeFromCodeCoverage] //Cannot test writing to console.
         public void NewLine()
         {
-            Console.WriteLine();
+            WriteLine();
         }
+
         [ExcludeFromCodeCoverage] //Cannot test writing to console.
         public void ClearScreen()
         {
-            Console.Clear();
+            Clear();
         }
 
         [ExcludeFromCodeCoverage] //Cannot test for user input.
