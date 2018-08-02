@@ -25,7 +25,7 @@ namespace Shuffle.Model
         #region Fields
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        private Position _playerPosition;
+        public Position PlayerPosition;
         public readonly int[,] Cells;
         private readonly Random _random;
         private const ConsoleColor ForegroundColor = DarkGray;
@@ -153,7 +153,7 @@ namespace Shuffle.Model
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="value"></param>
-        private void SetCell(int x, int y, CellStatus value)
+        public void SetCell(int x, int y, CellStatus value)
         {
             Cells[x, y] = (int) value;
             Logger.Info($"Cell {x},{y} set to status {value}");
@@ -202,11 +202,11 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        private void SetCurrentPlayerPosition(int x, int y)
+        public void SetCurrentPlayerPosition(int x, int y)
         {
             Position playerPosition = new Position(x, y);
-            _playerPosition = playerPosition;
-            Logger.Info($"Player Position Set to {_playerPosition.X},{_playerPosition.Y}.");
+            PlayerPosition = playerPosition;
+            Logger.Info($"Player Position Set to {PlayerPosition.X},{PlayerPosition.Y}.");
         }
 
         /// <summary>
@@ -216,38 +216,39 @@ namespace Shuffle.Model
         public void MovePlayer(Direction direction)
         {
             Direction moveDirection = direction;
-            switch (moveDirection) //Todo - Add Out of Range Check to stop player moving of edges
+            switch (moveDirection) 
             {
                 default:
                     Logger.Warn("Move Direction is not supported");
                     break;
                 case Direction.Up:
-                    SetCell(_playerPosition.X, _playerPosition.Y, Empty);
-                    SetCell(_playerPosition.X - 1, _playerPosition.Y, Player);
-                    SetCurrentPlayerPosition(_playerPosition.X - 1, _playerPosition.Y);
+                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                    SetCell(PlayerPosition.X - 1, PlayerPosition.Y, Player);
+                    SetCurrentPlayerPosition(PlayerPosition.X - 1, PlayerPosition.Y);
                     break;
                 case Direction.Down:
-                    SetCell(_playerPosition.X, _playerPosition.Y, Empty);
-                    SetCell(_playerPosition.X + 1, _playerPosition.Y, Player);
-                    SetCurrentPlayerPosition(_playerPosition.X + 1, _playerPosition.Y);
+                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                    SetCell(PlayerPosition.X + 1, PlayerPosition.Y, Player);
+                    SetCurrentPlayerPosition(PlayerPosition.X + 1, PlayerPosition.Y);
                     break;
                 case Direction.Left:
-                    SetCell(_playerPosition.X, _playerPosition.Y, Empty);
-                    SetCell(_playerPosition.X, _playerPosition.Y - 1, Player);
-                    SetCurrentPlayerPosition(_playerPosition.X, _playerPosition.Y - 1);
+                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                    SetCell(PlayerPosition.X, PlayerPosition.Y - 1, Player);
+                    SetCurrentPlayerPosition(PlayerPosition.X, PlayerPosition.Y - 1);
                     break;
                 case Direction.Right:
-                    SetCell(_playerPosition.X, _playerPosition.Y, Empty);
-                    SetCell(_playerPosition.X, _playerPosition.Y + 1, Player);
-                    SetCurrentPlayerPosition(_playerPosition.X, _playerPosition.Y + 1);
+                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                    SetCell(PlayerPosition.X, PlayerPosition.Y + 1, Player);
+                    SetCurrentPlayerPosition(PlayerPosition.X, PlayerPosition.Y + 1);
                     break;
                 case Direction.Invalid:
                     Logger.Warn("Move Direction is Invalid");
                     break;
             }
 
-            Logger.Info($"Player moved one cell {moveDirection} to {_playerPosition.X},{_playerPosition.Y}");
+            Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");
         }
+        //Todo - Add Out of Range Check to stop player moving of edges
 
         //Todo - Add a IsMined method to check for a hidden mine.
         //Todo - Add a method to 'Explode' a mine. Change Status from Hidden to Mine.
