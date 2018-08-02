@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Shuffle3.Model;
+using Shuffle.Model;
 
-namespace Shuffle3.Logic
+namespace Shuffle.Logic
 {
     public class GameFactory
     {

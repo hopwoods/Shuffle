@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using static System.Console;
 using static System.ConsoleColor;
-using static Shuffle3.Model.CellStatus;
+using static Shuffle.Model.CellStatus;
 
-namespace Shuffle3.Model
+namespace Shuffle.Model
 {
     /// <summary>
     /// Constants for contents of a cell

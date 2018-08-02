@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shuffle3.Model
+namespace Shuffle.Model
 {
     public class CellFormat
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Shuffle3.Logic;
-using Shuffle3.Model;
+using Shuffle.Logic;
+using Shuffle.Model;
 
-namespace Shuffle3
+namespace Shuffle
 {
     [ExcludeFromCodeCoverage]
     internal static class Program

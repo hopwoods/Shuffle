@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using static System.Console;
 
-namespace Shuffle3.Model
+namespace Shuffle.Model
 {
     //Todo - Add Method Documentation
     public class UserInterface : IUserInterface

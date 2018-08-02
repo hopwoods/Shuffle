@@ -1,4 +1,4 @@
-﻿namespace Shuffle3.Model
+﻿namespace Shuffle.Model
 {
     internal interface IBoard
     {
