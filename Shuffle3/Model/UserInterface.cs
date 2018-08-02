@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Shuffle.Model
+namespace Shuffle3.Model
 {
     public class UserInterface : IUserInterface
     {

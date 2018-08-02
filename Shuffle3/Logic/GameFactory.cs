@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualBasic;
-using Shuffle.Model;
+using Shuffle3.Model;
 
-namespace Shuffle.Logic
+namespace Shuffle3.Logic
 {
     public class GameFactory
     {
@@ -48,7 +47,7 @@ namespace Shuffle.Logic
             }
         }
         [ExcludeFromCodeCoverage] //Cannot Test for User Input
-        public void TakeTurns(Board gameBoard)
+        private void TakeTurns(Board gameBoard)
         {
             while (true)
             {

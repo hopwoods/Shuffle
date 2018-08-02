@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Shuffle.Logic;
-using Shuffle.Model;
+using Shuffle3.Logic;
+using Shuffle3.Model;
 
-namespace Shuffle
+namespace Shuffle3
 {
     [ExcludeFromCodeCoverage]
-    internal class Program
+    internal static class Program
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Shuffle
 
         #region Methods
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             try
             {

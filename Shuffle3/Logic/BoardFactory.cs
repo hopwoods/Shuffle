@@ -1,15 +1,9 @@
-﻿using Shuffle.Model;
-using System;
-using System.Collections.Generic;
+﻿using Shuffle3.Model;
 
-namespace Shuffle.Logic
+namespace Shuffle3.Logic
 {
     public class BoardFactory : IBoard
     {
-        public BoardFactory()
-        {
-        }
-
         public Board Get()
         {
             Board board = new Board();

@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Shuffle.Logic;
-using Shuffle.Model;
+using Shuffle3.Logic;
+using Shuffle3.Model;
 
-namespace Shuffle.Test
+namespace Shuffle3.Tests
 {
     [TestFixture]
     public class BoardFactoryTest

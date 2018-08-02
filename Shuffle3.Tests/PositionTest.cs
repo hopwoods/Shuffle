@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Shuffle.Model;
+using Shuffle3.Model;
 
-namespace Shuffle.Test
+namespace Shuffle3.Tests
 {
     [TestFixture]
     public class PositionTest

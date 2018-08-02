@@ -1,6 +1,6 @@
-﻿namespace Shuffle.Model
+﻿namespace Shuffle3.Model
 {
-    public interface IBoard
+    internal interface IBoard
     {
         Board Get();
     }

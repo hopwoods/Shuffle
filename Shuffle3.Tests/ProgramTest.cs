@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Shuffle.Test
+namespace Shuffle3.Tests
 {
     [TestFixture]
     public class ProgramTest

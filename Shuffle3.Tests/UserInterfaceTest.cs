@@ -1,7 +1,7 @@
-﻿using Shuffle.Model;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Shuffle3.Model;
 
-namespace Shuffle.Test
+namespace Shuffle3.Tests
 {
     [TestFixture]
     public class UserInterfaceTest

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuffle3", "Shuffle3\Shuffle3.csproj", "{8DC4D520-F28A-424E-8CDA-1E393AD1DCD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuffle", "Shuffle3\Shuffle.csproj", "{8DC4D520-F28A-424E-8CDA-1E393AD1DCD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuffle3.Tests", "Shuffle3.Tests\Shuffle3.Tests.csproj", "{204B6EA3-1059-4562-A0AE-2B9118D959E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuffle.Tests", "Shuffle3.Tests\Shuffle.Tests.csproj", "{204B6EA3-1059-4562-A0AE-2B9118D959E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

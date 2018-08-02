@@ -65,9 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shuffle3\Shuffle3.csproj">
+    <ProjectReference Include="..\Shuffle3\Shuffle.csproj">
       <Project>{8dc4d520-f28a-424e-8cda-1e393ad1dcd7}</Project>
-      <Name>Shuffle3</Name>
+      <Name>Shuffle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

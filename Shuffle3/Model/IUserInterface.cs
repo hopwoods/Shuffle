@@ -1,4 +1,4 @@
-﻿namespace Shuffle.Model
+﻿namespace Shuffle3.Model
 {
     public interface IUserInterface
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Shuffle.Model
+namespace Shuffle3.Model
 {
     /// <summary>
     /// Constants for contents of a cell
@@ -25,9 +25,7 @@ namespace Shuffle.Model
         #region Fields
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public readonly int Height;
-        public readonly int Width;
-        public Position PlayerPosition;
+        private Position _playerPosition;
         public readonly int[,] Cells;
         private readonly Random _random;
 
@@ -52,9 +50,9 @@ namespace Shuffle.Model
         /// <exception cref="ApplicationException"></exception>
         public Board()
         {
-            Width = 8;
-            Height = 8;
-            Cells = new int[Width, Height];
+            int width = 8;
+            int height = 8;
+            Cells = new int[width, height];
             _random = new Random();
             int mines = GenerateMines();
             PlaceMines(mines);
@@ -143,7 +141,7 @@ namespace Shuffle.Model
             Cells[x, y] = (int) value;
         }
 
-        public void PlacePlayerStartPosition()
+        private void PlacePlayerStartPosition()
         {
             SetCell(7, 0, CellStatus.Player);
             SetCurrentPlayerPosition(7, 0);
@@ -168,7 +166,7 @@ namespace Shuffle.Model
         private void SetCurrentPlayerPosition(int x, int y)
         {
             Position playerPosition = new Position(x, y);
-            PlayerPosition = playerPosition;
+            _playerPosition = playerPosition;
         }
 
         public void MovePlayer(Direction direction)
@@ -177,24 +175,24 @@ namespace Shuffle.Model
             switch (moveDirection) //Todo - Add Out of Range Check to stop player moving of edges
             {
                 case Direction.Up:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                    SetCell(PlayerPosition.X - 1, PlayerPosition.Y, CellStatus.Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X - 1, PlayerPosition.Y);
+                    SetCell(_playerPosition.X, _playerPosition.Y, CellStatus.Empty);
+                    SetCell(_playerPosition.X - 1, _playerPosition.Y, CellStatus.Player);
+                    SetCurrentPlayerPosition(_playerPosition.X - 1, _playerPosition.Y);
                     break;
                 case Direction.Down:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                    SetCell(PlayerPosition.X + 1, PlayerPosition.Y, CellStatus.Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X + 1, PlayerPosition.Y);
+                    SetCell(_playerPosition.X, _playerPosition.Y, CellStatus.Empty);
+                    SetCell(_playerPosition.X + 1, _playerPosition.Y, CellStatus.Player);
+                    SetCurrentPlayerPosition(_playerPosition.X + 1, _playerPosition.Y);
                     break;
                 case Direction.Left:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                    SetCell(PlayerPosition.X, PlayerPosition.Y - 1, CellStatus.Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X, PlayerPosition.Y - 1);
+                    SetCell(_playerPosition.X, _playerPosition.Y, CellStatus.Empty);
+                    SetCell(_playerPosition.X, _playerPosition.Y - 1, CellStatus.Player);
+                    SetCurrentPlayerPosition(_playerPosition.X, _playerPosition.Y - 1);
                     break;
                 case Direction.Right:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                    SetCell(PlayerPosition.X, PlayerPosition.Y + 1, CellStatus.Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X, PlayerPosition.Y + 1);
+                    SetCell(_playerPosition.X, _playerPosition.Y, CellStatus.Empty);
+                    SetCell(_playerPosition.X, _playerPosition.Y + 1, CellStatus.Player);
+                    SetCurrentPlayerPosition(_playerPosition.X, _playerPosition.Y + 1);
                     break;
             }
         }
