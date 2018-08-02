@@ -1,4 +1,6 @@
-﻿namespace Shuffle.Model
+﻿using System;
+
+namespace Shuffle.Model
 {
     public enum Direction
     {
@@ -25,6 +27,35 @@
             Y = col;
         }
 
-        //Todo - Add Out of Range Check to stop player moving of edges
+        /// <summary>
+        /// Method for checking if a position is outside of the game board.
+        /// </summary>
+        /// <returns>True or False</returns>
+        public bool IsInBounds()
+        {
+            //if (this == null) throw new ArgumentNullException(nameof(position));
+
+            // ReSharper disable once JoinDeclarationAndInitializer
+            bool inBounds;
+            inBounds = true;
+
+            if (X < 0)
+            {
+                inBounds = false;
+            }
+            if (X > 7)
+            {
+                inBounds = false;
+            }
+            if (Y < 0)
+            {
+                inBounds = false;
+            }
+            else if (Y > 7)
+            {
+                inBounds = false;
+            }
+            return inBounds;
+        }
     }
 }
