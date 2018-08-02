@@ -103,8 +103,9 @@ namespace Shuffle.Tests
         {
             //Arrange
             Board board = new Board();
+            Position playerPosition = new Position(4,4);
             //Act
-            board.SetCurrentPlayerPosition(4,4);
+            board.SetCurrentPlayerPosition(playerPosition);
             //Assert
             Assert.That(board.PlayerPosition.X, Is.EqualTo(4));
         }
@@ -113,8 +114,9 @@ namespace Shuffle.Tests
         {
             //Arrange
             Board board = new Board();
+            Position playerPosition = new Position(4,4);
             //Act
-            board.SetCurrentPlayerPosition(4,4);
+            board.SetCurrentPlayerPosition(playerPosition);
             //Assert
             Assert.That(board.PlayerPosition.X, Is.EqualTo(4));
         }
@@ -127,7 +129,8 @@ namespace Shuffle.Tests
         {
             //Arrange
             Board board = new Board();
-            board.SetCurrentPlayerPosition(4,4);
+            Position playerPosition = new Position(4,4);
+            board.SetCurrentPlayerPosition(playerPosition);
             Position currentPlayerPosition = board.PlayerPosition;
             //Act
             board.MovePlayer(direction);
@@ -143,7 +146,8 @@ namespace Shuffle.Tests
         {
             //Arrange
             Board board = new Board();
-            board.SetCurrentPlayerPosition(4,4);
+            Position playerPosition = new Position(4,4);
+            board.SetCurrentPlayerPosition(playerPosition);
             Position newPlayerPosition = null;
             switch (direction)
             {
@@ -177,7 +181,8 @@ namespace Shuffle.Tests
         {
             //Arrange
             Board board = new Board();
-            board.SetCurrentPlayerPosition(4,4);
+            Position playerPosition = new Position(4,4);
+            board.SetCurrentPlayerPosition(playerPosition);
             Position newPlayerPosition = null;
             switch (direction)
             {
@@ -210,7 +215,8 @@ namespace Shuffle.Tests
         {
             //Arrange
             Board board = new Board();
-            board.SetCurrentPlayerPosition(4,4);
+            Position playerPosition = new Position(4,4);
+            board.SetCurrentPlayerPosition(playerPosition);
             Position newPlayerPosition = null;
             switch (direction)
             {

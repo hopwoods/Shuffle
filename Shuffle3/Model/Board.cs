@@ -164,8 +164,9 @@ namespace Shuffle.Model
         /// </summary>
         private void PlacePlayerStartPosition()
         {
-            SetCell(7, 0, Player);
-            SetCurrentPlayerPosition(7, 0);
+            Position startPosition = new Position(7,0);
+            SetCell(startPosition.X, startPosition.Y, Player);
+            SetCurrentPlayerPosition(startPosition);
             Logger.Info("Player Start Position Set to 7,0");
         }
 
@@ -202,10 +203,10 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SetCurrentPlayerPosition(int x, int y)
+        public void SetCurrentPlayerPosition(Position newPosition)
         {
-            Position playerPosition = new Position(x, y);
-            PlayerPosition = playerPosition;
+            //Position playerPosition = new Position(x, y);
+            PlayerPosition = newPosition;
             Logger.Info($"Player Position Set to {PlayerPosition.X},{PlayerPosition.Y}.");
         }
 
@@ -215,37 +216,81 @@ namespace Shuffle.Model
         /// <param name="direction"></param>
         public void MovePlayer(Direction direction)
         {
+            //Todo - DRY PRINCIPLE. Try to make more modular
             Direction moveDirection = direction;
+            bool isInBounds;
+            string moveMessage = null;
+            Position newPosition;
             switch (moveDirection) 
             {
                 default:
                     Logger.Warn("Move Direction is not supported");
                     break;
                 case Direction.Up:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                    SetCell(PlayerPosition.X - 1, PlayerPosition.Y, Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X - 1, PlayerPosition.Y);
+                    newPosition = new Position(PlayerPosition.X - 1, PlayerPosition.Y);
+                    isInBounds = newPosition.IsInBounds();
+                    if(isInBounds)
+                    {
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty); //Todo - Create ClearCurrentPosition method
+                        SetCell(newPosition.X, newPosition.Y, Player); //Todo - Create MoveToNewPosition method
+                        SetCurrentPlayerPosition(newPosition);
+                        moveMessage = $"You moved {moveDirection}.";
+                    }
+                    else
+                    {
+                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                    }
                     break;
                 case Direction.Down:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                    SetCell(PlayerPosition.X + 1, PlayerPosition.Y, Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X + 1, PlayerPosition.Y);
+                    newPosition = new Position(PlayerPosition.X + 1, PlayerPosition.Y);
+                    isInBounds = newPosition.IsInBounds();
+                    if (isInBounds)
+                    {
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                        SetCell(newPosition.X, newPosition.Y, Player);
+                        SetCurrentPlayerPosition(newPosition);
+                        moveMessage = $"You moved {moveDirection}.";
+                    }
+                    else
+                    {
+                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                    }
                     break;
                 case Direction.Left:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                    SetCell(PlayerPosition.X, PlayerPosition.Y - 1, Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X, PlayerPosition.Y - 1);
+                    newPosition = new Position(PlayerPosition.X, PlayerPosition.Y - 1);
+                    isInBounds = newPosition.IsInBounds();
+                    if (isInBounds)
+                    {
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                        SetCell(newPosition.X, newPosition.Y, Player);
+                        SetCurrentPlayerPosition(newPosition);
+                        moveMessage = $"You moved {moveDirection}.";
+                    }
+                    else
+                    {
+                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                    }
                     break;
                 case Direction.Right:
-                    SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                    SetCell(PlayerPosition.X, PlayerPosition.Y + 1, Player);
-                    SetCurrentPlayerPosition(PlayerPosition.X, PlayerPosition.Y + 1);
+                    newPosition = new Position(PlayerPosition.X, PlayerPosition.Y + 1);
+                    isInBounds = newPosition.IsInBounds();
+                    if (isInBounds)
+                    {
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
+                        SetCell(newPosition.X, newPosition.Y, Player);
+                        SetCurrentPlayerPosition(newPosition);
+                        moveMessage = $"You moved {moveDirection}.";
+                    }
+                    else
+                    {
+                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                    }
                     break;
                 case Direction.Invalid:
                     Logger.Warn("Move Direction is Invalid");
                     break;
             }
-
+            WriteLine(moveMessage);
             Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");
         }
         //Todo - Add Out of Range Check to stop player moving of edges

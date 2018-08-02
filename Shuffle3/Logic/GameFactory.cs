@@ -66,22 +66,18 @@ namespace Shuffle.Logic
                 {
                     case (int) Direction.Up:
                         _userInterface.ClearScreen();
-                        _userInterface.RenderMessage("You moved up.");
                         gameBoard.MovePlayer(Direction.Up);
                         break;
                     case (int) Direction.Down:
                         _userInterface.ClearScreen();
-                        _userInterface.RenderMessage("You moved down.");
                         gameBoard.MovePlayer(Direction.Down);
                         break;
                     case (int) Direction.Left:
                         _userInterface.ClearScreen();
-                        _userInterface.RenderMessage("You moved left.");
                         gameBoard.MovePlayer(Direction.Left);
                         break;
                     case (int) Direction.Right:
                         _userInterface.ClearScreen();
-                        _userInterface.RenderMessage("You moved right.");
                         gameBoard.MovePlayer(Direction.Right);
                         break;
                     case (int) Direction.Invalid:
@@ -94,7 +90,7 @@ namespace Shuffle.Logic
                         continue;
                 }
                 //Todo - Check for Mine (IsMined method)
-                //Todo - If Mined, Explode Mine and subtract a life.
+                //Todo - If Mined, Explode Mine and subtract a life (Explode method / LoseLife method).
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
                 //Todo - Check Lives remaining and if none, end game, showing message to player.
