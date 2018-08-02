@@ -1,8 +1,8 @@
 ﻿namespace Shuffle.Model
 {
-    public interface IPlayer
+    internal interface IPlayer
     {
-        string PlayerName();
-        int Lives();
+        void SetPlayerName(string playername);
+        void SetLives(int lives);
     }
 }

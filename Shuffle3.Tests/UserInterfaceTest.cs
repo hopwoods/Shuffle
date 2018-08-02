@@ -1,16 +1,28 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Internal;
 using Shuffle.Model;
+using Shuffle.Utilities;
 
 namespace Shuffle.Tests
 {
+    
+
     [TestFixture]
     public class UserInterfaceTest
     {
+
+        private readonly Utility _utility;
+
+        public UserInterfaceTest(Utility utility)
+        {
+            _utility = utility;
+        }
+
         [Test]
         public void ValidateMoveShouldEqualUp()
         {
             //Arrange
-            UserInterface userInterface = new UserInterface();
+            UserInterface userInterface = new UserInterface(_utility);
 
             //Act
             int result = userInterface.ValidateMove("U");
@@ -22,7 +34,7 @@ namespace Shuffle.Tests
         public void ValidateMoveShouldEqualDown()
         {
             //Arrange
-            UserInterface userInterface = new UserInterface();
+            UserInterface userInterface = new UserInterface(_utility);
 
             //Act
             int result = userInterface.ValidateMove("D");
@@ -34,7 +46,7 @@ namespace Shuffle.Tests
         public void ValidateMoveShouldEqualLeft()
         {
             //Arrange
-            UserInterface userInterface = new UserInterface();
+            UserInterface userInterface = new UserInterface(_utility);
 
             //Act
             int result = userInterface.ValidateMove("L");
@@ -46,7 +58,7 @@ namespace Shuffle.Tests
         public void ValidateMoveShouldEqualRight()
         {
             //Arrange
-            UserInterface userInterface = new UserInterface();
+            UserInterface userInterface = new UserInterface(_utility);
 
             //Act
             int result = userInterface.ValidateMove("R");
@@ -58,7 +70,7 @@ namespace Shuffle.Tests
         public void ValidateMoveShouldEqualInvalid()
         {
             //Arrange
-            UserInterface userInterface = new UserInterface();
+            UserInterface userInterface = new UserInterface(_utility);
 
             //Act
             int result = userInterface.ValidateMove("A");
