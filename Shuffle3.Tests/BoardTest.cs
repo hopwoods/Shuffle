@@ -118,6 +118,124 @@ namespace Shuffle.Tests
             //Assert
             Assert.That(board.PlayerPosition.X, Is.EqualTo(4));
         }
+
+        [TestCase(Direction.Up)]
+        [TestCase(Direction.Down)]
+        [TestCase(Direction.Left)]
+        [TestCase(Direction.Right)]
+        public void MovePlayerSetsCurrentPlayerPositionToEmpty(Direction direction)
+        {
+            //Arrange
+            Board board = new Board();
+            board.SetCurrentPlayerPosition(4,4);
+            Position currentPlayerPosition = board.PlayerPosition;
+            //Act
+            board.MovePlayer(direction);
+            //Assert
+            Assert.That(board.Cells[currentPlayerPosition.X,currentPlayerPosition.Y], Is.EqualTo((int) CellStatus.Empty));
+        }
+
+        [TestCase(Direction.Up)]
+        [TestCase(Direction.Down)]
+        [TestCase(Direction.Left)]
+        [TestCase(Direction.Right)]
+        public void MovePlayerSetsNewPlayerPositionToPlayer(Direction direction)
+        {
+            //Arrange
+            Board board = new Board();
+            board.SetCurrentPlayerPosition(4,4);
+            Position newPlayerPosition = null;
+            switch (direction)
+            {
+                case Direction.Up:
+                    newPlayerPosition = new Position(3,4);
+                    break;
+                case Direction.Down:
+                    newPlayerPosition = new Position(5,4);
+                    break;
+                case Direction.Left:
+                    newPlayerPosition = new Position(4,3);
+                    break;
+                case Direction.Right:
+                    newPlayerPosition = new Position(4,5);
+                    break;   
+            }
+            //Act
+            board.MovePlayer(direction);
+            //Assert
+            if (newPlayerPosition != null)
+            {
+                Assert.That(board.Cells[newPlayerPosition.X, newPlayerPosition.Y], Is.EqualTo((int) CellStatus.Player));
+            }
+        }
+
+        [TestCase(Direction.Up)]
+        [TestCase(Direction.Down)]
+        [TestCase(Direction.Left)]
+        [TestCase(Direction.Right)]
+        public void MovePlayerShouldUpdatePlayerPositionXValue(Direction direction)
+        {
+            //Arrange
+            Board board = new Board();
+            board.SetCurrentPlayerPosition(4,4);
+            Position newPlayerPosition = null;
+            switch (direction)
+            {
+                case Direction.Up:
+                    newPlayerPosition = new Position(3,4);
+                    break;
+                case Direction.Down:
+                    newPlayerPosition = new Position(5,4);
+                    break;
+                case Direction.Left:
+                    newPlayerPosition = new Position(4,3);
+                    break;
+                case Direction.Right:
+                    newPlayerPosition = new Position(4,5);
+                    break;   
+            }
+            //Act
+            board.MovePlayer(direction);
+            //Assert
+            if (newPlayerPosition != null)
+            {
+                Assert.That(board.PlayerPosition.X, Is.EqualTo(newPlayerPosition.X));
+            }
+        }
+        [TestCase(Direction.Up)]
+        [TestCase(Direction.Down)]
+        [TestCase(Direction.Left)]
+        [TestCase(Direction.Right)]
+        public void MovePlayerShouldUpdatePlayerPositionYValue(Direction direction)
+        {
+            //Arrange
+            Board board = new Board();
+            board.SetCurrentPlayerPosition(4,4);
+            Position newPlayerPosition = null;
+            switch (direction)
+            {
+                case Direction.Up:
+                    newPlayerPosition = new Position(3,4);
+                    break;
+                case Direction.Down:
+                    newPlayerPosition = new Position(5,4);
+                    break;
+                case Direction.Left:
+                    newPlayerPosition = new Position(4,3);
+                    break;
+                case Direction.Right:
+                    newPlayerPosition = new Position(4,5);
+                    break;   
+            }
+            //Act
+            board.MovePlayer(direction);
+            //Assert
+            if (newPlayerPosition != null)
+            {
+                Assert.That(board.PlayerPosition.Y, Is.EqualTo(newPlayerPosition.Y));
+            }
+        }
+
         
     }
 }
