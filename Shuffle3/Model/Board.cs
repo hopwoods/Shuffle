@@ -293,11 +293,8 @@ namespace Shuffle.Model
             WriteLine(moveMessage);
             Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");
         }
-        //Todo - Add Out of Range Check to stop player moving of edges
-
         //Todo - Add a IsMined method to check for a hidden mine.
         //Todo - Add a method to 'Explode' a mine. Change Status from Hidden to Mine.
-        //Todo - Add a method to subtract a life when mine 'Explodes'
         //Todo - Add a method to check if player position is in top row.
     }
 

@@ -3,9 +3,11 @@ using static System.Console;
 
 namespace Shuffle.Model
 {
-    //Todo - Add Method Documentation
+    
+    //Todo - Add a method to subtract a life when mine 'Explodes'
     public class UserInterface : IUserInterface
     {
+        //Todo - Add Method Documentation
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         [ExcludeFromCodeCoverage] //Cannot test for User Input

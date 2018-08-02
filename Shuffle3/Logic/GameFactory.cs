@@ -89,8 +89,8 @@ namespace Shuffle.Logic
                             $"{requestedMove} is not a valid move ('U','D','L', or 'R'). Please try again.");
                         continue;
                 }
-                //Todo - Check for Mine (IsMined method)
-                //Todo - If Mined, Explode Mine and subtract a life (Explode method / LoseLife method).
+                //Todo - Check for Mine (using board.IsMined method)
+                //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / board.LoseLife method).
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
                 //Todo - Check Lives remaining and if none, end game, showing message to player.
