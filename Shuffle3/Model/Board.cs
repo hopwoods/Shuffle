@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using static System.Console;
 using static System.ConsoleColor;
 
@@ -87,7 +86,7 @@ namespace Shuffle.Model
             }
 
             Console.ForegroundColor = Gray;
-            Console.WriteLine();
+            WriteLine();
             //Console.WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
             Logger.Info("Board Drawn");
             return true;
