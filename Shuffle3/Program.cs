@@ -3,10 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Shuffle.Logic;
 using Shuffle.Model;
+using static System.Console;
 
 namespace Shuffle
 {
-    [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage] //Cannot Test Main Method
     internal static class Program
     {
         #region Fields
@@ -35,20 +36,21 @@ namespace Shuffle
             catch (Exception exception)
             {
                 Logger.Error(exception, $"An Error has occued: {0}", exception.Message);
-                Console.WriteLine($"An Error Occured: {exception}");
-                Console.WriteLine("Press Any Key to Exit");
-                Console.ReadKey();
+                WriteLine($"An Error Occured: {exception}");
+                WriteLine("Press Any Key to Exit");
+                ReadKey();
             }
         }
 
         /// <summary>
         ///     Configure the console settings.
         /// </summary>
-        [ExcludeFromCodeCoverage]
         private static bool ConfigureConsole()
         {
-            Console.InputEncoding = Encoding.UTF8;
-            Console.Title = "Shuffle! by Stuart Hopwood";
+            InputEncoding = Encoding.UTF8;
+            WindowWidth = 100;
+            WindowHeight = 25;
+            Title = "Shuffle! by Stuart Hopwood";
             Logger.Info("Console Configured");
             return true;
         }
