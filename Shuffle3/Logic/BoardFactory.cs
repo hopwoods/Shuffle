@@ -2,7 +2,7 @@
 
 namespace Shuffle.Logic
 {
-    public class BoardFactory
+    public class BoardFactory : IBoardFactory
     {
         public Board Get()
         {

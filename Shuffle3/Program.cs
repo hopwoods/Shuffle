@@ -32,8 +32,8 @@ namespace Shuffle
                 IUserInterface userInterface = new UserInterface(new Utility());
                 BoardFactory boardFactory = new BoardFactory();
                 PlayerFactory playerFactory = new PlayerFactory();
-                GameFactory gameFactory = new GameFactory(userInterface, boardFactory, playerFactory);
-                gameFactory.StartGame();
+                GameProcessor gameProcessor = new GameProcessor(userInterface, boardFactory, playerFactory);
+                gameProcessor.StartGame();
                 NLog.LogManager.Shutdown(); // Flush and close down internal threads and timers
             }
             catch (Exception exception)

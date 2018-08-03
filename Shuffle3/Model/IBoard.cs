@@ -1,9 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Shuffle.Model
+﻿namespace Shuffle.Model
 {
-    [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
-    internal interface IBoard
+    public interface IBoard
     {
         bool DrawBoard();
         void SetCell(int x, int y, CellStatus value);

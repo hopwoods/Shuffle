@@ -3,7 +3,7 @@
 namespace Shuffle.Model
 {
     [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
-    internal interface IPlayer
+    public interface IPlayer
     {
         void SetPlayerName(string playername);
         void SetLives(int lives);

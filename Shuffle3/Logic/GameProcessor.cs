@@ -1,22 +1,33 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using NLog;
 using Shuffle.Model;
 
 namespace Shuffle.Logic
 {
-    public class GameFactory
+    public class GameProcessor
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        private readonly IUserInterface _userInterface;
-        private readonly BoardFactory _boardFactory;
-        private readonly PlayerFactory _playerFactory;
+        #region Fields
 
-        public GameFactory(IUserInterface userInterface, BoardFactory boardFactory, PlayerFactory playerFactory)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly IUserInterface _userInterface;
+        private readonly IBoardFactory _boardFactory;
+        private readonly IPlayerFactory _playerFactory;
+
+        #endregion
+
+        #region Constructor
+
+        public GameProcessor(IUserInterface userInterface, IBoardFactory boardFactory, IPlayerFactory playerFactory)
         {
             _userInterface = userInterface;
             _boardFactory = boardFactory;
             _playerFactory = playerFactory;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Start the Game.
@@ -28,7 +39,7 @@ namespace Shuffle.Logic
             {
                 Board gameBoard = _boardFactory.Get();
                 Logger.Info("New Game Board created");
-                Player player = _playerFactory.Get();
+                Player player = _playerFactory.CreatePlayer();
                 player.SetPlayerName(_userInterface.AskForPlayerName());
                 player.SetLives();
                 Logger.Info("New Player Created");
@@ -42,7 +53,6 @@ namespace Shuffle.Logic
                 {
                     throw new ApplicationException("Something went wrong while drawing the board");
                 }
-
                 _userInterface.NewLine();
                 _userInterface.RenderMessage("Ready Player One.");
                 Logger.Info("Turns Started");
@@ -108,5 +118,7 @@ namespace Shuffle.Logic
                 _userInterface.NewLine();
             }
         }
+
+        #endregion
     }
 }

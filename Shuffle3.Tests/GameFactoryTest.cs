@@ -16,9 +16,9 @@ namespace Shuffle.Tests
             BoardFactory boardFactory = new BoardFactory();
             PlayerFactory playerFactory = new PlayerFactory();
             //Act
-            GameFactory gameFactory = new GameFactory(userInterface, boardFactory, playerFactory);
+            GameProcessor gameProcessor = new GameProcessor(userInterface, boardFactory, playerFactory);
             //Asset
-            Assert.That(gameFactory, Is.TypeOf<GameFactory>());
+            Assert.That(gameProcessor, Is.TypeOf<GameProcessor>());
         }
     }
 }

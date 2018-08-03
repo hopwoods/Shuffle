@@ -2,9 +2,9 @@
 
 namespace Shuffle.Logic
 {
-    public class PlayerFactory
+    public class PlayerFactory : IPlayerFactory
     {
-        public Player Get()
+        public Player CreatePlayer()
         {
             Player player = new Player();
             return player;
