@@ -142,7 +142,7 @@ namespace Shuffle.Model
         private static char GetLetterFromX(int x) => (char) x;
 
         /// <summary>
-        /// Set a cell value.
+        /// Set a cell value by providing cell XY coordinates
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -151,6 +151,17 @@ namespace Shuffle.Model
         {
             Cells[x, y] = (int) value;
             Logger.Info($"Cell {x},{y} set to status {value}");
+        }
+
+        /// <summary>
+        /// Set a cell value by providing position object
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="position"></param>
+        public void SetCell(Position position, CellStatus value) //Todo - Add SetCell Overload tests.
+        {
+            Cells[position.X, position.Y] = (int) value;
+            Logger.Info($"Cell {position.X},{position.Y} set to status {value}");
         }
 
         /// <summary>
