@@ -8,5 +8,6 @@ namespace Shuffle.Model
         void SetPlayerName(string playername);
         void SetLives(int lives);
         bool IsPlayerAlive();
+        void LoseLife();
     }
 }

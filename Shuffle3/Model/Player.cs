@@ -6,7 +6,7 @@ namespace Shuffle.Model
     {
         #region Fields
 
-        public int Lives;
+        public int Lives = 2;
         public string Name;
 
         #endregion
@@ -34,6 +34,14 @@ namespace Shuffle.Model
         public bool IsPlayerAlive()
         {
             return Lives > 0;
+        }
+
+        /// <summary>
+        /// Subtract a life from the player
+        /// </summary>
+        public void LoseLife()
+        {
+            Lives = Lives - 1;
         }
 
         #endregion

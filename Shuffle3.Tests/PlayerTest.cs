@@ -76,5 +76,20 @@ namespace Shuffle.Tests
             //Assert
             Assert.That(isAlive, Is.False);
         }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        public void LoseLife(int numberOfLives)
+        {
+            //Arrange
+            Player player = _playerFactory.CreatePlayer();
+            player.SetLives(numberOfLives);
+            int originalLives = player.Lives;
+            //Act
+            player.LoseLife();
+            int livesLeft = player.Lives;
+            //Assert
+            Assert.That(livesLeft, Is.EqualTo(originalLives-1));
+        }
     }
 }
