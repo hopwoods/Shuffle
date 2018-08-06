@@ -106,7 +106,7 @@ namespace Shuffle.Logic
                         continue;
                 }
 
-                //Todo - Check for Mine (using board.IsMined method)
+                //Todo - Check for Mine (IMPLEMENT board.IsMined method)
                 //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / board.LoseLife method).
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();

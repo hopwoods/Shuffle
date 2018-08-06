@@ -22,7 +22,7 @@ namespace Shuffle.Model
             Lives = lives;
         }
 
-        public void SetPlayerName(string playername) //Todo - Add SetPlayerName Test Cases
+        public void SetPlayerName(string playername)
         {
             Name = string.IsNullOrWhiteSpace(playername) ? "Player One" : playername;
         }
