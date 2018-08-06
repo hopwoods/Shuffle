@@ -28,7 +28,6 @@ namespace Shuffle.Model
         public readonly int[,] Cells;
         private readonly Random _random;
         private const ConsoleColor ForegroundColor = DarkGray;
-
         private readonly Dictionary<CellStatus, CellFormat> _cellFormats = new Dictionary<CellStatus, CellFormat>()
         {
             {CellStatus.Empty, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
@@ -84,7 +83,6 @@ namespace Shuffle.Model
                     FormatCell(cellValue);
                 }
             }
-
             Console.ForegroundColor = Gray;
             WriteLine();
             //Console.WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
@@ -193,7 +191,6 @@ namespace Shuffle.Model
                     SetCell(x, y, CellStatus.HiddenMine);
                 }
             }
-
             Logger.Info($"{mines} Mines Placed");
         }
 
@@ -240,7 +237,6 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
-
                     break;
                 case Direction.Down:
                     newPosition = new Position(PlayerPosition.X + 1, PlayerPosition.Y);
@@ -256,7 +252,6 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
-
                     break;
                 case Direction.Left:
                     newPosition = new Position(PlayerPosition.X, PlayerPosition.Y - 1);
@@ -272,7 +267,6 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
-
                     break;
                 case Direction.Right:
                     newPosition = new Position(PlayerPosition.X, PlayerPosition.Y + 1);
@@ -288,13 +282,11 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
-
                     break;
                 case Direction.Invalid:
                     Logger.Warn("Move Direction is Invalid");
                     break;
             }
-
             WriteLine(moveMessage);
             WriteLine();
             Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");

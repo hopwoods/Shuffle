@@ -37,7 +37,7 @@ namespace Shuffle.Logic
         {
             try
             {
-                Board gameBoard = _boardFactory.Get();
+                Board gameBoard = _boardFactory.CreateBoard();
                 Logger.Info("New Game Board created");
                 Player player = _playerFactory.CreatePlayer();
                 player.SetPlayerName(_userInterface.AskForPlayerName());
@@ -116,7 +116,6 @@ namespace Shuffle.Logic
                 //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / player.LoseLife method).
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
-                //Check if player is alive.
                 if (!player.IsPlayerAlive())
                 {
                     Logger.Info($"Player: {player.Name} Died. Ending Turns.");
@@ -124,7 +123,6 @@ namespace Shuffle.Logic
                     break;
                 }
                 //Todo - Check if player has won. If so, end game, showing message to the player.
-                
                 _userInterface.NewLine();
             }
         }
