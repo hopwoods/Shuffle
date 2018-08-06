@@ -59,6 +59,7 @@
     <Compile Include="BoardFactoryTest.cs" />
     <Compile Include="BoardTest.cs" />
     <Compile Include="GameFactoryTest.cs" />
+    <Compile Include="PlayerTest.cs" />
     <Compile Include="PositionTest.cs" />
     <Compile Include="ProgramTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

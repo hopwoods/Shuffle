@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using static System.Console;
 using static System.ConsoleColor;
-using static Shuffle.Model.CellStatus;
 
 namespace Shuffle.Model
 {
@@ -20,7 +19,7 @@ namespace Shuffle.Model
     /// <summary>
     /// Game Board Object and Method
     /// </summary>
-    public class Board
+    public class Board : IBoard
     {
         #region Fields
 
@@ -32,10 +31,10 @@ namespace Shuffle.Model
 
         private readonly Dictionary<CellStatus, CellFormat> _cellFormats = new Dictionary<CellStatus, CellFormat>()
         {
-            {Empty, new CellFormat {DisplayCharacter = " ", DisplayColour = Black}},
-            {HiddenMine, new CellFormat {DisplayCharacter = " ", DisplayColour = Black}},
-            {Mine, new CellFormat {DisplayCharacter = "M", DisplayColour = Red}},
-            {Player, new CellFormat {DisplayCharacter = "O", DisplayColour = Yellow}},
+            {CellStatus.Empty, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
+            {CellStatus.HiddenMine, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
+            {CellStatus.Mine, new CellFormat {DisplayCharacter = Convert.ToChar("\u25CF"), DisplayColour = Red}},
+            {CellStatus.Player, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Yellow}},
         };
 
         #endregion
@@ -54,8 +53,8 @@ namespace Shuffle.Model
             Cells = new int[width, height];
             _random = new Random();
             int mines = GenerateMines();
-            PlaceMines(mines);
             PlacePlayerStartPosition();
+            PlaceMines(mines);
         }
 
         /// <summary>
@@ -87,7 +86,7 @@ namespace Shuffle.Model
             }
 
             Console.ForegroundColor = Gray;
-            //Console.WriteLine();
+            WriteLine();
             //Console.WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
             Logger.Info("Board Drawn");
             return true;
@@ -102,35 +101,35 @@ namespace Shuffle.Model
         {
             switch (cellValue)
             {
-                case (int) Mine:
+                case (int) CellStatus.Mine:
                     Console.ForegroundColor = ForegroundColor;
                     Write("[");
-                    Console.ForegroundColor = _cellFormats[Mine].DisplayColour;
-                    Write(_cellFormats[Mine].DisplayCharacter);
+                    Console.ForegroundColor = _cellFormats[CellStatus.Mine].DisplayColour;
+                    Write(_cellFormats[CellStatus.Mine].DisplayCharacter);
                     Console.ForegroundColor = ForegroundColor;
                     Write("]");
                     return cellValue;
-                case (int) HiddenMine:
+                case (int) CellStatus.HiddenMine:
                     Console.ForegroundColor = ForegroundColor;
                     Write("[");
-                    Console.ForegroundColor = _cellFormats[HiddenMine].DisplayColour;
-                    Write(_cellFormats[HiddenMine].DisplayCharacter);
+                    Console.ForegroundColor = _cellFormats[CellStatus.HiddenMine].DisplayColour;
+                    Write(_cellFormats[CellStatus.HiddenMine].DisplayCharacter);
                     Console.ForegroundColor = ForegroundColor;
                     Write("]");
                     return cellValue;
-                case (int) Player:
+                case (int) CellStatus.Player:
                     Console.ForegroundColor = ForegroundColor;
                     Write("[");
-                    Console.ForegroundColor = _cellFormats[Player].DisplayColour;
-                    Write(_cellFormats[Player].DisplayCharacter);
+                    Console.ForegroundColor = _cellFormats[CellStatus.Player].DisplayColour;
+                    Write(_cellFormats[CellStatus.Player].DisplayCharacter);
                     Console.ForegroundColor = ForegroundColor;
                     Write("]");
                     return cellValue;
                 default:
                     Console.ForegroundColor = ForegroundColor;
                     Write("[");
-                    Console.ForegroundColor = _cellFormats[Empty].DisplayColour;
-                    Write(_cellFormats[Empty].DisplayCharacter);
+                    Console.ForegroundColor = _cellFormats[CellStatus.Empty].DisplayColour;
+                    Write(_cellFormats[CellStatus.Empty].DisplayCharacter);
                     Console.ForegroundColor = ForegroundColor;
                     Write("]");
                     return cellValue;
@@ -142,10 +141,7 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        private static char GetLetterFromX(int x)
-        {
-            return (char) x;
-        }
+        private static char GetLetterFromX(int x) => (char) x;
 
         /// <summary>
         /// Set a cell value.
@@ -164,8 +160,8 @@ namespace Shuffle.Model
         /// </summary>
         private void PlacePlayerStartPosition()
         {
-            Position startPosition = new Position(7,0);
-            SetCell(startPosition.X, startPosition.Y, Player);
+            Position startPosition = new Position(7, 0);
+            SetCell(startPosition.X, startPosition.Y, CellStatus.Player);
             SetCurrentPlayerPosition(startPosition);
             Logger.Info("Player Start Position Set to 7,0");
         }
@@ -174,10 +170,10 @@ namespace Shuffle.Model
         /// Generate a random number of mines to place on the board. Min of 2, Max of 6.
         /// Min of 2 so game is always able to be lost.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Integer for Number of Mines</returns>
         private int GenerateMines()
         {
-            int mines = _random.Next(2, 6);
+            int mines = _random.Next(2, 6); //Minimum number of mines is two.
             Logger.Info($"{mines} Mines Generated");
             return mines;
         }
@@ -192,7 +188,10 @@ namespace Shuffle.Model
             {
                 int x = _random.Next(0, 7);
                 int y = _random.Next(0, 7);
-                SetCell(x, y, HiddenMine);
+                if (Cells[x, y] == (int) CellStatus.Empty) //Only Place Mine on empty cells.
+                {
+                    SetCell(x, y, CellStatus.HiddenMine);
+                }
             }
 
             Logger.Info($"{mines} Mines Placed");
@@ -201,8 +200,7 @@ namespace Shuffle.Model
         /// <summary>
         /// Set the current known player position on the board.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="newPosition"></param>
         public void SetCurrentPlayerPosition(Position newPosition)
         {
             //Position playerPosition = new Position(x, y);
@@ -214,14 +212,14 @@ namespace Shuffle.Model
         /// Move the player on the board by one cell, in a given direction.
         /// </summary>
         /// <param name="direction"></param>
-        public void MovePlayer(Direction direction)
+        public string MovePlayer(Direction direction)
         {
             //Todo - DRY PRINCIPLE. Try to make more modular
             Direction moveDirection = direction;
             bool isInBounds;
             string moveMessage = null;
             Position newPosition;
-            switch (moveDirection) 
+            switch (moveDirection)
             {
                 default:
                     Logger.Warn("Move Direction is not supported");
@@ -229,10 +227,12 @@ namespace Shuffle.Model
                 case Direction.Up:
                     newPosition = new Position(PlayerPosition.X - 1, PlayerPosition.Y);
                     isInBounds = newPosition.IsInBounds();
-                    if(isInBounds)
+                    if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty); //Todo - Create ClearCurrentPosition method
-                        SetCell(newPosition.X, newPosition.Y, Player); //Todo - Create MoveToNewPosition method
+                        SetCell(PlayerPosition.X, PlayerPosition.Y,
+                            CellStatus.Empty); //Todo - Create ClearCurrentPosition method
+                        SetCell(newPosition.X, newPosition.Y,
+                            CellStatus.Player); //Todo - Create MoveToNewPosition method
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -240,14 +240,15 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
+
                     break;
                 case Direction.Down:
                     newPosition = new Position(PlayerPosition.X + 1, PlayerPosition.Y);
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                        SetCell(newPosition.X, newPosition.Y, Player);
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
+                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -255,14 +256,15 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
+
                     break;
                 case Direction.Left:
                     newPosition = new Position(PlayerPosition.X, PlayerPosition.Y - 1);
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                        SetCell(newPosition.X, newPosition.Y, Player);
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
+                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -270,14 +272,15 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
+
                     break;
                 case Direction.Right:
                     newPosition = new Position(PlayerPosition.X, PlayerPosition.Y + 1);
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, Empty);
-                        SetCell(newPosition.X, newPosition.Y, Player);
+                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
+                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -285,14 +288,19 @@ namespace Shuffle.Model
                     {
                         moveMessage = ($"You can't move {moveDirection}. Try Again");
                     }
+
                     break;
                 case Direction.Invalid:
                     Logger.Warn("Move Direction is Invalid");
                     break;
             }
+
             WriteLine(moveMessage);
+            WriteLine();
             Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");
+            return moveMessage;
         }
+
         //Todo - Add a IsMined method to check for a hidden mine.
         //Todo - Add a method to 'Explode' a mine. Change Status from Hidden to Mine.
         //Todo - Add a method to check if player position is in top row.

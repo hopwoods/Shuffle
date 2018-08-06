@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Shuffle.Logic;
 using Shuffle.Model;
+using Shuffle.Utilities;
 
 namespace Shuffle.Tests
 {
@@ -11,12 +12,13 @@ namespace Shuffle.Tests
         public void GameFactoryReturnsGame()
         {
             //Arrange
-            UserInterface userInterface = new UserInterface();
+            UserInterface userInterface = new UserInterface(new Utility());
             BoardFactory boardFactory = new BoardFactory();
+            PlayerFactory playerFactory = new PlayerFactory();
             //Act
-            GameFactory gameFactory = new GameFactory(userInterface, boardFactory);
+            GameProcessor gameProcessor = new GameProcessor(userInterface, boardFactory, playerFactory);
             //Asset
-            Assert.That(gameFactory, Is.TypeOf<GameFactory>());
+            Assert.That(gameProcessor, Is.TypeOf<GameProcessor>());
         }
     }
 }

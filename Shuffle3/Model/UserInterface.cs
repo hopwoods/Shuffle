@@ -1,14 +1,20 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using static System.Console;
+using static System.String;
+using Shuffle.Utilities;
 
 namespace Shuffle.Model
 {
-    
-    //Todo - Add a method to subtract a life when mine 'Explodes'
     public class UserInterface : IUserInterface
     {
         //Todo - Add Method Documentation
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly Utility _utility;
+
+        public UserInterface(Utility utility)
+        {
+            _utility = utility;
+        }
 
         [ExcludeFromCodeCoverage] //Cannot test for User Input
         public string GetUserInput()
@@ -42,6 +48,29 @@ namespace Shuffle.Model
             RenderMessage("Make your move by typing 'U','D','L', or 'R' and pressing Enter");
             string requestedMove = GetUserInput();
             return requestedMove;
+        }
+        [ExcludeFromCodeCoverage] //Cannot test for user input.
+        public string AskForPlayerName()
+        {
+            string requestedNameInput;
+            while (true)
+            {
+                RenderMessage("Please Enter Your Player Name");
+                requestedNameInput = GetUserInput();
+                if (IsNullOrEmpty(requestedNameInput))
+                {
+                    ClearScreen();
+                    continue;
+                }
+                if(_utility.IsStringTooLong(30,requestedNameInput))
+                {
+                    ClearScreen();
+                    RenderMessage("Player Name is too long. Use 30 characters or less.");
+                    continue;
+                }
+                break;
+            }
+           return requestedNameInput;
         }
 
         public int ValidateMove(string requestedMove)

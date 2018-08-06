@@ -94,11 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\BoardFactory.cs" />
-    <Compile Include="Logic\GameFactory.cs" />
+    <Compile Include="Logic\GameProcessor.cs" />
+    <Compile Include="Logic\IBoardFactory.cs" />
+    <Compile Include="Logic\IPlayerFactory.cs" />
+    <Compile Include="Logic\PlayerFactory.cs" />
     <Compile Include="Model\Board.cs" />
     <Compile Include="Model\CellFormat.cs" />
     <Compile Include="Model\IBoard.cs" />
+    <Compile Include="Model\IPlayer.cs" />
     <Compile Include="Model\IUserInterface.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Position.cs" />
     <Compile Include="Model\UserInterface.cs" />
     <Compile Include="Program.cs" />
@@ -108,6 +113,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -136,9 +142,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <PublishFile Include="nunit.engine.api.dll">
       <Visible>False</Visible>

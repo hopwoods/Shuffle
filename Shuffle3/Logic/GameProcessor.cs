@@ -1,20 +1,34 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using NLog;
 using Shuffle.Model;
 
 namespace Shuffle.Logic
 {
-    public class GameFactory
+    public class GameProcessor
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        private readonly IUserInterface _userInterface;
-        private readonly BoardFactory _boardFactory;
+        #region Fields
 
-        public GameFactory(IUserInterface userInterface, BoardFactory boardFactory)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly IUserInterface _userInterface;
+        private readonly IBoardFactory _boardFactory;
+        private readonly IPlayerFactory _playerFactory;
+
+        #endregion
+
+        #region Constructor
+
+        public GameProcessor(IUserInterface userInterface, IBoardFactory boardFactory, IPlayerFactory playerFactory)
         {
             _userInterface = userInterface;
             _boardFactory = boardFactory;
+            _playerFactory = playerFactory;
         }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Start the Game.
         /// </summary>
@@ -25,9 +39,12 @@ namespace Shuffle.Logic
             {
                 Board gameBoard = _boardFactory.Get();
                 Logger.Info("New Game Board created");
-                //Todo - Add a Player Class which has Player Name, and a Lives Counter
-                //Todo - Request and Display Player Name
-                _userInterface.RenderMessage("Welcome to Shuffle!");
+                Player player = _playerFactory.CreatePlayer();
+                player.SetPlayerName(_userInterface.AskForPlayerName());
+                player.SetLives();
+                Logger.Info("New Player Created");
+                _userInterface.ClearScreen();
+                _userInterface.RenderMessage($"Welcome {player.Name} to Shuffle!");
                 _userInterface.RenderMessage(
                     "Move your piece to the top of the board to win. Watch out for mines, hit two and its GAME OVER!");
                 _userInterface.NewLine();
@@ -36,8 +53,6 @@ namespace Shuffle.Logic
                 {
                     throw new ApplicationException("Something went wrong while drawing the board");
                 }
-
-                _userInterface.NewLine();
                 _userInterface.NewLine();
                 _userInterface.RenderMessage("Ready Player One.");
                 Logger.Info("Turns Started");
@@ -51,6 +66,7 @@ namespace Shuffle.Logic
                 _userInterface.GetUserInput();
             }
         }
+
         /// <summary>
         /// Take Turns until game completed.
         /// </summary>
@@ -89,7 +105,8 @@ namespace Shuffle.Logic
                             $"{requestedMove} is not a valid move ('U','D','L', or 'R'). Please try again.");
                         continue;
                 }
-                //Todo - Check for Mine (using board.IsMined method)
+
+                //Todo - Check for Mine (IMPLEMENT board.IsMined method)
                 //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / board.LoseLife method).
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
@@ -101,5 +118,7 @@ namespace Shuffle.Logic
                 _userInterface.NewLine();
             }
         }
+
+        #endregion
     }
 }

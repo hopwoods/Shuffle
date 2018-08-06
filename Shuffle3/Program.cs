@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Shuffle.Logic;
 using Shuffle.Model;
+using Shuffle.Utilities;
 using static System.Console;
 
 namespace Shuffle
@@ -28,9 +29,11 @@ namespace Shuffle
                 {
                     throw new ApplicationException("Error configuring console.");
                 }
-
-                GameFactory gameFactory = new GameFactory(new UserInterface(), new BoardFactory());
-                gameFactory.StartGame();
+                IUserInterface userInterface = new UserInterface(new Utility());
+                BoardFactory boardFactory = new BoardFactory();
+                PlayerFactory playerFactory = new PlayerFactory();
+                GameProcessor gameProcessor = new GameProcessor(userInterface, boardFactory, playerFactory);
+                gameProcessor.StartGame();
                 NLog.LogManager.Shutdown(); // Flush and close down internal threads and timers
             }
             catch (Exception exception)
@@ -47,7 +50,8 @@ namespace Shuffle
         /// </summary>
         private static bool ConfigureConsole()
         {
-            InputEncoding = Encoding.UTF8;
+            InputEncoding = Encoding.Unicode;
+            OutputEncoding = Encoding.Unicode;
             WindowWidth = 100;
             WindowHeight = 25;
             Title = "Shuffle! by Stuart Hopwood";

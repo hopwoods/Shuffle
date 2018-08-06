@@ -241,7 +241,38 @@ namespace Shuffle.Tests
                 Assert.That(board.PlayerPosition.Y, Is.EqualTo(newPlayerPosition.Y));
             }
         }
+        [TestCase(Direction.Up)]
+        [TestCase(Direction.Down)]
+        [TestCase(Direction.Left)]
+        [TestCase(Direction.Right)]
+        public void MovePlayerShouldSetMoveMessage(Direction direction)
+        {
+            //Arrange
+            Board board = new Board();
+            Position playerPosition = null;
+            switch (direction)
+            {
+                case Direction.Up:
+                    playerPosition = new Position(0,0);
+                    break;
+                case Direction.Down:
+                    playerPosition = new Position(7,0);
+                    break;
+                case Direction.Left:
+                    playerPosition = new Position(0,0);
+                    break;
+                case Direction.Right:
+                    playerPosition = new Position(0,7);
+                    break;   
+            }
+            board.SetCurrentPlayerPosition(playerPosition);
 
+            //Act
+            string moveMessage = board.MovePlayer(direction);
+            //Assert
+            Assert.That(moveMessage, Contains.Substring("You can\'t move"));
+            
+        }
         
     }
 }
