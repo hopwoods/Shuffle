@@ -141,7 +141,7 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        private char GetLetterFromX(int x) => (char) x;
+        private static char GetLetterFromX(int x) => (char) x;
 
         /// <summary>
         /// Set a cell value.
