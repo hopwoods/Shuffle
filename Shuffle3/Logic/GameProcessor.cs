@@ -56,7 +56,12 @@ namespace Shuffle.Logic
                 _userInterface.NewLine();
                 _userInterface.RenderMessage("Ready Player One.");
                 Logger.Info("Turns Started");
-                TakeTurns(gameBoard);
+                TakeTurns(gameBoard, player);
+
+                //Todo - Ask to Play Again.
+                //Todo - Validate Y/N
+                //Todo - If Y for New Game, Start New Game.
+                _userInterface.GetUserInput();
             }
             catch (Exception exception)
             {
@@ -71,8 +76,9 @@ namespace Shuffle.Logic
         /// Take Turns until game completed.
         /// </summary>
         /// <param name="gameBoard"></param>
+        /// <param name="player"></param>
         [ExcludeFromCodeCoverage] //Cannot Test for User Input
-        private void TakeTurns(Board gameBoard)
+        private void TakeTurns(Board gameBoard, Player player)
         {
             while (true)
             {
@@ -107,14 +113,18 @@ namespace Shuffle.Logic
                 }
 
                 //Todo - Check for Mine (IMPLEMENT board.IsMined method)
-                //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / board.LoseLife method).
+                //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / player.LoseLife method).
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
-                //Todo - Check Lives remaining and if none, end game, showing message to player.
+                //Check if player is alive.
+                if (!player.IsPlayerAlive())
+                {
+                    Logger.Info($"Player: {player.Name} Died. Ending Turns.");
+                    _userInterface.RenderMessage($"{player.Name} you have no lives left! Game Over Man, Game Over.");
+                    break;
+                }
                 //Todo - Check if player has won. If so, end game, showing message to the player.
-                //Todo - Ask to Play Again.
-                //Todo - Validate Y/N
-                //Todo - If Y for New Game, Start New Game.
+                
                 _userInterface.NewLine();
             }
         }

@@ -62,7 +62,7 @@ namespace Shuffle.Model
                     ClearScreen();
                     continue;
                 }
-                if(_utility.IsStringTooLong(30,requestedNameInput))
+                if(Utility.IsStringTooLong(30,requestedNameInput))
                 {
                     ClearScreen();
                     RenderMessage("Player Name is too long. Use 30 characters or less.");
