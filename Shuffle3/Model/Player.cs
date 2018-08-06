@@ -27,6 +27,16 @@ namespace Shuffle.Model
             Name = string.IsNullOrWhiteSpace(playername) ? "Player One" : playername;
         }
 
+        /// <summary>
+        /// Check if player has any remaining lives.
+        /// </summary>
+        /// <param name="lives"></param>
+        /// <returns>True or False</returns>
+        public bool IsPlayerAlive()
+        {
+            return Lives > 0;
+        }
+
         #endregion
     }
 }

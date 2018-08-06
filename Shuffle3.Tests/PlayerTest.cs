@@ -52,5 +52,29 @@ namespace Shuffle.Tests
             //Assert
             Assert.That(player.Name, Is.EqualTo("Stuart Hopwood"));
         }
+
+        [Test]
+        public void IsPlayerAliveReturnsTrueGivenLivesOf1()
+        {
+            //Arrange
+            Player player = _playerFactory.CreatePlayer();
+            player.SetLives(1);
+            //Act
+            bool isAlive = player.IsPlayerAlive();
+            //Assert
+            Assert.That(isAlive, Is.True);
+        }
+
+        [Test]
+        public void IsPlayerAliveReturnsFalseGivenLivesOf0()
+        {
+            //Arrange
+            Player player = _playerFactory.CreatePlayer();
+            player.SetLives(0);
+            //Act
+            bool isAlive = player.IsPlayerAlive();
+            //Assert
+            Assert.That(isAlive, Is.False);
+        }
     }
 }
