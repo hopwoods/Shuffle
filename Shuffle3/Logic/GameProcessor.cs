@@ -57,6 +57,10 @@ namespace Shuffle.Logic
                 _userInterface.RenderMessage("Ready Player One.");
                 Logger.Info("Turns Started");
                 TakeTurns(gameBoard, player);
+
+                //Todo - Ask to Play Again.
+                //Todo - Validate Y/N
+                //Todo - If Y for New Game, Start New Game.
                 _userInterface.GetUserInput();
             }
             catch (Exception exception)
@@ -74,7 +78,7 @@ namespace Shuffle.Logic
         /// <param name="gameBoard"></param>
         /// <param name="player"></param>
         [ExcludeFromCodeCoverage] //Cannot Test for User Input
-        private void TakeTurns(IBoard gameBoard, IPlayer player)
+        private void TakeTurns(Board gameBoard, Player player)
         {
             while (true)
             {
@@ -114,13 +118,12 @@ namespace Shuffle.Logic
                 gameBoard.DrawBoard();
                 if (!player.IsPlayerAlive())
                 {
-                    _userInterface.RenderMessage("You have no lives left! Game Over Man, Game Over.");
+                    Logger.Info($"Player: {player.Name} Died. Ending Turns.");
+                    _userInterface.RenderMessage($"{player.Name} you have no lives left! Game Over Man, Game Over.");
                     break;
                 }
                 //Todo - Check if player has won. If so, end game, showing message to the player.
-                //Todo - Ask to Play Again.
-                //Todo - Validate Y/N
-                //Todo - If Y for New Game, Start New Game.
+                
                 _userInterface.NewLine();
             }
         }
