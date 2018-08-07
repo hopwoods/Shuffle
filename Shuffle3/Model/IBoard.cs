@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shuffle.Model
 {
@@ -8,6 +9,11 @@ namespace Shuffle.Model
         bool DrawBoard();
         void SetCell(int x, int y, CellStatus value);
         void SetCurrentPlayerPosition(Position newPosition);
+        void PlacePlayerStartPosition();
+        void PlaceMines(int mines);
+        void ClearCell(Position cell);
+        int GenerateMines();
+        char GetLetterFromX(int x);
         string MovePlayer(Direction direction);
     }
 }

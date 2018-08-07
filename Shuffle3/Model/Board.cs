@@ -139,7 +139,7 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        private static char GetLetterFromX(int x) => (char) x;
+        public char GetLetterFromX(int x) => (char) x;
 
         /// <summary>
         /// Set a cell value by providing cell XY coordinates
@@ -167,7 +167,7 @@ namespace Shuffle.Model
         /// <summary>
         /// Set the player start position
         /// </summary>
-        private void PlacePlayerStartPosition()
+        public void PlacePlayerStartPosition()
         {
             Position startPosition = new Position(7, 0);
             SetCell(startPosition.X, startPosition.Y, CellStatus.Player);
@@ -180,7 +180,7 @@ namespace Shuffle.Model
         /// Min of 2 so game is always able to be lost.
         /// </summary>
         /// <returns>Integer for Number of Mines</returns>
-        private int GenerateMines()
+        public int GenerateMines()
         {
             int mines = _random.Next(2, 6); //Minimum number of mines is two.
             Logger.Info($"{mines} Mines Generated");
@@ -191,7 +191,7 @@ namespace Shuffle.Model
         /// Place mines in random cell locations on the board.
         /// </summary>
         /// <param name="mines"></param>
-        private void PlaceMines(int mines)
+        public void PlaceMines(int mines)
         {
             for (int i = 0; i < mines; i++)
             {
@@ -203,6 +203,12 @@ namespace Shuffle.Model
                 }
             }
             Logger.Info($"{mines} Mines Placed");
+        }
+
+
+        public void ClearCell(Position position)
+        {
+            Cells[position.X, position.Y] = (int) CellStatus.Empty;
         }
 
         /// <summary>
@@ -237,8 +243,7 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y,
-                            CellStatus.Empty); //Todo - Create ClearCurrentPosition method
+                        ClearCell(PlayerPosition);
                         SetCell(newPosition.X, newPosition.Y,
                             CellStatus.Player); //Todo - Create MoveToNewPosition method
                         SetCurrentPlayerPosition(newPosition);
@@ -254,7 +259,7 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
+                        ClearCell(PlayerPosition);
                         SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
@@ -269,7 +274,7 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
+                        ClearCell(PlayerPosition);
                         SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
@@ -284,7 +289,7 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
+                        ClearCell(PlayerPosition);
                         SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
@@ -303,6 +308,8 @@ namespace Shuffle.Model
             Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");
             return moveMessage;
         }
+
+
 
         //Todo - Add a IsMined method to check for a hidden mine.
         //Todo - Add a method to 'Explode' a mine. Change Status from Hidden to Mine.
