@@ -289,6 +289,18 @@ namespace Shuffle.Tests
             Assert.That(moveMessage, Contains.Substring("You can\'t move"));
             
         }
-        
+       
+        [Test]
+        public void ClearCell_ShouldSetGivenCellValueToEmpty()
+        {
+            //Arrange
+            Board board = new Board();
+            Position postion = new Position(4,4);
+            board.SetCell(postion, CellStatus.Player);
+            //Act
+            board.ClearCell(postion);
+            //Assert
+            Assert.That(board.Cells[4,4], Is.EqualTo((int) CellStatus.Empty));
+        }
     }
 }
