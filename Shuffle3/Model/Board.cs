@@ -290,7 +290,6 @@ namespace Shuffle.Model
             return cellStatus;
         }
 
-        //Todo - Add a method to check if player position is in top row.
         public bool IsCellInTopRow(Position position)
         {
             return position.X == 0;

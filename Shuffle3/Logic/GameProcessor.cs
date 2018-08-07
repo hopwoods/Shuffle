@@ -53,6 +53,7 @@ namespace Shuffle.Logic
                 {
                     throw new ApplicationException("Something went wrong while drawing the board");
                 }
+
                 _userInterface.NewLine();
                 _userInterface.RenderMessage("Ready Player One.");
                 Logger.Info("Turns Started");
@@ -113,10 +114,11 @@ namespace Shuffle.Logic
                 }
 
                 int cellStatus = gameBoard.GetCellStatus(gameBoard.PlayerPosition);
-                if(cellStatus == (int)CellStatus.PlayerIsHit)
+                if (cellStatus == (int) CellStatus.PlayerIsHit)
                 {
                     player.LoseLife();
                 }
+
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
                 if (!player.IsPlayerAlive())
@@ -135,8 +137,6 @@ namespace Shuffle.Logic
                     _userInterface.NewLine();
                     break;
                 }
-                //Todo - Check if player has won. If so, end game, showing message to the player.
-                
             }
         }
 
