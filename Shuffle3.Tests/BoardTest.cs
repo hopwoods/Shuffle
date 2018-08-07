@@ -302,5 +302,17 @@ namespace Shuffle.Tests
             //Assert
             Assert.That(board.Cells[4,4], Is.EqualTo((int) CellStatus.Empty));
         }
+       
+        [Test]
+        public void MoveToCell_ShouldSetGivenCellValueToPlayer()
+        {
+            //Arrange
+            Board board = new Board();
+            Position postion = new Position(4,4);
+            //Act
+            board.MoveToCell(postion);
+            //Assert
+            Assert.That(board.Cells[4,4], Is.EqualTo((int) CellStatus.Player));
+        }
     }
 }

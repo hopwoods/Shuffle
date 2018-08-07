@@ -13,7 +13,8 @@ namespace Shuffle.Model
         Empty,
         HiddenMine,
         Mine,
-        Player
+        Player,
+        PlayerIsHit
     }
 
     /// <summary>
@@ -205,10 +206,22 @@ namespace Shuffle.Model
             Logger.Info($"{mines} Mines Placed");
         }
 
-
-        public void ClearCell(Position position)
+        /// <summary>
+        /// Clear Cell. Set to Empty or to Mine if player landed on a mine.
+        /// </summary>
+        /// <param name="position"></param>
+        public void ClearCell(Position position) //Todo - Add Mine Logic to change from PlayerHit to Mined.
         {
             Cells[position.X, position.Y] = (int) CellStatus.Empty;
+        }
+
+        /// <summary>
+        /// Move the player piece (Change Status to Player) to the given cell.
+        /// </summary>
+        /// <param name="position"></param>
+        public void MoveToCell(Position position)
+        {
+            Cells[position.X, position.Y] = (int) CellStatus.Player;
         }
 
         /// <summary>
@@ -244,8 +257,7 @@ namespace Shuffle.Model
                     if (isInBounds)
                     {
                         ClearCell(PlayerPosition);
-                        SetCell(newPosition.X, newPosition.Y,
-                            CellStatus.Player); //Todo - Create MoveToNewPosition method
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -260,7 +272,7 @@ namespace Shuffle.Model
                     if (isInBounds)
                     {
                         ClearCell(PlayerPosition);
-                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -275,7 +287,7 @@ namespace Shuffle.Model
                     if (isInBounds)
                     {
                         ClearCell(PlayerPosition);
-                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
@@ -290,7 +302,7 @@ namespace Shuffle.Model
                     if (isInBounds)
                     {
                         ClearCell(PlayerPosition);
-                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
                         moveMessage = $"You moved {moveDirection}.";
                     }
