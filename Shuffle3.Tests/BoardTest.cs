@@ -304,6 +304,19 @@ namespace Shuffle.Tests
         }
        
         [Test]
+        public void ClearCell_ShouldSetGivenCellValueToMine()
+        {
+            //Arrange
+            Board board = new Board();
+            Position postion = new Position(4,4);
+            board.SetCell(postion, CellStatus.PlayerIsHit);
+            //Act
+            board.ClearCell(postion);
+            //Assert
+            Assert.That(board.Cells[4,4], Is.EqualTo((int) CellStatus.Mine));
+        }
+       
+        [Test]
         public void MoveToCell_ShouldSetGivenCellValueToPlayer()
         {
             //Arrange

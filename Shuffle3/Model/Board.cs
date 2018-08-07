@@ -35,6 +35,7 @@ namespace Shuffle.Model
             {CellStatus.HiddenMine, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
             {CellStatus.Mine, new CellFormat {DisplayCharacter = Convert.ToChar("\u25CF"), DisplayColour = Red}},
             {CellStatus.Player, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Yellow}},
+            {CellStatus.PlayerIsHit, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Red}},
         };
 
         #endregion
@@ -121,6 +122,14 @@ namespace Shuffle.Model
                     Write("[");
                     Console.ForegroundColor = _cellFormats[CellStatus.Player].DisplayColour;
                     Write(_cellFormats[CellStatus.Player].DisplayCharacter);
+                    Console.ForegroundColor = ForegroundColor;
+                    Write("]");
+                    return cellValue;
+                case (int) CellStatus.PlayerIsHit:
+                    Console.ForegroundColor = ForegroundColor;
+                    Write("[");
+                    Console.ForegroundColor = _cellFormats[CellStatus.PlayerIsHit].DisplayColour;
+                    Write(_cellFormats[CellStatus.PlayerIsHit].DisplayCharacter);
                     Console.ForegroundColor = ForegroundColor;
                     Write("]");
                     return cellValue;
@@ -212,7 +221,15 @@ namespace Shuffle.Model
         /// <param name="position"></param>
         public void ClearCell(Position position) //Todo - Add Mine Logic to change from PlayerHit to Mined.
         {
-            Cells[position.X, position.Y] = (int) CellStatus.Empty;
+            switch (Cells[position.X, position.Y])
+            {
+                case (int)CellStatus.PlayerIsHit:
+                    SetCell(position, CellStatus.Mine);
+                    break;
+                default:
+                    SetCell(position, CellStatus.Empty);
+                    break;
+            }
         }
 
         /// <summary>
