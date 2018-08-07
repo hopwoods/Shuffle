@@ -74,7 +74,8 @@ namespace Shuffle.Tests
         [TestCase(CellStatus.Empty)]
         [TestCase(CellStatus.Player)]
         [TestCase(CellStatus.Mine)]
-        public void SetCellShouldSetCorrectValueGivenStatus(CellStatus cellStatus)
+        [TestCase(CellStatus.PlayerIsHit)]
+        public void SetCell_ShouldSetCorrectValueGivenStatus(CellStatus cellStatus)
         {
             //Arrange
             Board board = new Board();
@@ -89,7 +90,8 @@ namespace Shuffle.Tests
         [TestCase(CellStatus.Empty)]
         [TestCase(CellStatus.Player)]
         [TestCase(CellStatus.Mine)]
-        public void SetCellProvidedWithPositionShouldSetCorrectValueGivenStatus(CellStatus cellStatus)
+        [TestCase(CellStatus.PlayerIsHit)]
+        public void SetCell_ProvidedWithPositionShouldSetCorrectValueGivenStatus(CellStatus cellStatus)
         {
             //Arrange
             Board board = new Board();
@@ -104,7 +106,8 @@ namespace Shuffle.Tests
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
-        public void FormatCellValueGivenCellValue(int cellValue)
+        [TestCase(4)]
+        public void FormatCell_GivenCellValue(int cellValue)
         {
             //Arrange
             Board board = new Board();
@@ -115,7 +118,7 @@ namespace Shuffle.Tests
         }
 
         [Test]
-        public void SetCurrentPlayerPositionShouldUpdatePlayerPositionXValue()
+        public void SetCurrentPlayerPosition_ShouldUpdatePlayerPositionXValue()
         {
             //Arrange
             Board board = new Board();
@@ -126,7 +129,7 @@ namespace Shuffle.Tests
             Assert.That(board.PlayerPosition.X, Is.EqualTo(4));
         }
         [Test]
-        public void SetCurrentPlayerPositionShouldUpdatePlayerPositionYValue()
+        public void SetCurrentPlayerPosition_ShouldUpdatePlayerPositionYValue()
         {
             //Arrange
             Board board = new Board();
@@ -141,7 +144,7 @@ namespace Shuffle.Tests
         [TestCase(Direction.Down)]
         [TestCase(Direction.Left)]
         [TestCase(Direction.Right)]
-        public void MovePlayerSetsCurrentPlayerPositionToEmpty(Direction direction)
+        public void MovePlayer_SetsCurrentPlayerPositionToEmpty(Direction direction)
         {
             //Arrange
             Board board = new Board();
@@ -158,7 +161,7 @@ namespace Shuffle.Tests
         [TestCase(Direction.Down)]
         [TestCase(Direction.Left)]
         [TestCase(Direction.Right)]
-        public void MovePlayerSetsNewPlayerPositionToPlayer(Direction direction)
+        public void MovePlayer_SetsNewPlayerPositionToPlayer(Direction direction)
         {
             //Arrange
             Board board = new Board();
@@ -180,6 +183,7 @@ namespace Shuffle.Tests
                     newPlayerPosition = new Position(4,5);
                     break;   
             }
+            board.SetCell(newPlayerPosition, CellStatus.Empty);
             //Act
             board.MovePlayer(direction);
             //Assert
@@ -193,7 +197,7 @@ namespace Shuffle.Tests
         [TestCase(Direction.Down)]
         [TestCase(Direction.Left)]
         [TestCase(Direction.Right)]
-        public void MovePlayerShouldUpdatePlayerPositionXValue(Direction direction)
+        public void MovePlayer_ShouldUpdatePlayerPositionXValue(Direction direction)
         {
             //Arrange
             Board board = new Board();
@@ -227,7 +231,7 @@ namespace Shuffle.Tests
         [TestCase(Direction.Down)]
         [TestCase(Direction.Left)]
         [TestCase(Direction.Right)]
-        public void MovePlayerShouldUpdatePlayerPositionYValue(Direction direction)
+        public void MovePlayer_ShouldUpdatePlayerPositionYValue(Direction direction)
         {
             //Arrange
             Board board = new Board();
@@ -261,7 +265,7 @@ namespace Shuffle.Tests
         [TestCase(Direction.Down)]
         [TestCase(Direction.Left)]
         [TestCase(Direction.Right)]
-        public void MovePlayerShouldSetMoveMessage(Direction direction)
+        public void MovePlayer_ShouldSetMoveMessage(Direction direction)
         {
             //Arrange
             Board board = new Board();
@@ -327,5 +331,82 @@ namespace Shuffle.Tests
             //Assert
             Assert.That(board.Cells[4,4], Is.EqualTo((int) CellStatus.Player));
         }
+
+        [Test]
+        public void IsCellMined_ReturnsTrue()
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(4,4);
+            board.SetCell(4,4,CellStatus.HiddenMine);
+            //Act
+            bool result = board.IsCellMined(position);
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsCellMined_ReturnsFalse()
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(4,4);
+            //Act
+            bool result = board.IsCellMined(position);
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void CellStatus_ReturnsCorrectStatus()
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(4,4);
+            board.SetCell(position,CellStatus.Player);
+            //Act
+            int result = board.GetCellStatus(position);
+            //Assert
+            Assert.That(result, Is.EqualTo((int) CellStatus.Player));
+        }
+
+        [Test]
+        public void ExplodeMine()
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(4,4);
+            board.SetCell(position,CellStatus.HiddenMine);
+            //Act
+            board.Explode(position);
+            //Assert
+            Assert.That(board.Cells[4,4], Is.EqualTo((int)CellStatus.PlayerIsHit));
+        } 
+
+        [Test]
+        public void IsCellInTopRow_IsTrue()
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(0,4);
+            //Act
+            bool result = board.IsCellInTopRow(position);
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsCellInTopRow_IsFalse()
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(0,4);
+            //Act
+            bool result = board.IsCellInTopRow(position);
+            //Assert
+            Assert.That(result, Is.True);
+        }
     }
+        
+
 }

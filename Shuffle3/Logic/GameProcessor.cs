@@ -112,18 +112,31 @@ namespace Shuffle.Logic
                         continue;
                 }
 
-                //Todo - Check for Mine (IMPLEMENT board.IsMined method)
-                //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / player.LoseLife method).
+                int cellStatus = gameBoard.GetCellStatus(gameBoard.PlayerPosition);
+                if(cellStatus == (int)CellStatus.PlayerIsHit)
+                {
+                    player.LoseLife();
+                }
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
                 if (!player.IsPlayerAlive())
                 {
                     Logger.Info($"Player: {player.Name} Died. Ending Turns.");
                     _userInterface.RenderMessage($"{player.Name} you have no lives left! Game Over Man, Game Over.");
+                    _userInterface.NewLine();
+                    break;
+                }
+
+                bool hasPlayerWon = gameBoard.IsCellInTopRow(gameBoard.PlayerPosition);
+                if (hasPlayerWon)
+                {
+                    Logger.Info($"Player: {player.Name} Won the game. Ending Turns.");
+                    _userInterface.RenderMessage($"{player.Name} you Won! Congratualtions!");
+                    _userInterface.NewLine();
                     break;
                 }
                 //Todo - Check if player has won. If so, end game, showing message to the player.
-                _userInterface.NewLine();
+                
             }
         }
 
