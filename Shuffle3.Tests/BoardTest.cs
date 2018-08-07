@@ -84,6 +84,22 @@ namespace Shuffle.Tests
             Assert.That(board.Cells[4,4], Is.EqualTo((int) cellStatus));
         }
 
+
+        [TestCase(CellStatus.HiddenMine)]
+        [TestCase(CellStatus.Empty)]
+        [TestCase(CellStatus.Player)]
+        [TestCase(CellStatus.Mine)]
+        public void SetCellProvidedWithPositionShouldSetCorrectValueGivenStatus(CellStatus cellStatus)
+        {
+            //Arrange
+            Board board = new Board();
+            Position position = new Position(4,4);
+            //Act
+            board.SetCell(position,cellStatus);
+            //Assert
+            Assert.That(board.Cells[4,4], Is.EqualTo((int) cellStatus));
+        }
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]

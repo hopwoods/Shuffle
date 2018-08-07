@@ -158,7 +158,7 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="value"></param>
         /// <param name="position"></param>
-        public void SetCell(Position position, CellStatus value) //Todo - Add SetCell Overload tests.
+        public void SetCell(Position position, CellStatus value)
         {
             Cells[position.X, position.Y] = (int) value;
             Logger.Info($"Cell {position.X},{position.Y} set to status {value}");
