@@ -13,7 +13,8 @@ namespace Shuffle.Model
         Empty,
         HiddenMine,
         Mine,
-        Player
+        Player,
+        PlayerIsHit
     }
 
     /// <summary>
@@ -35,6 +36,7 @@ namespace Shuffle.Model
             {CellStatus.HiddenMine, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
             {CellStatus.Mine, new CellFormat {DisplayCharacter = Convert.ToChar("\u25CF"), DisplayColour = Red}},
             {CellStatus.Player, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Yellow}},
+            {CellStatus.PlayerIsHit, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Red}},
         };
 
         #endregion
@@ -87,7 +89,7 @@ namespace Shuffle.Model
 
             Console.ForegroundColor = Gray;
             WriteLine();
-            //Console.WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
+            //WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
             Logger.Info("Board Drawn");
             return true;
         }
@@ -125,6 +127,14 @@ namespace Shuffle.Model
                     Console.ForegroundColor = ForegroundColor;
                     Write("]");
                     return cellValue;
+                case (int) CellStatus.PlayerIsHit:
+                    Console.ForegroundColor = ForegroundColor;
+                    Write("[");
+                    Console.ForegroundColor = _cellFormats[CellStatus.PlayerIsHit].DisplayColour;
+                    Write(_cellFormats[CellStatus.PlayerIsHit].DisplayCharacter);
+                    Console.ForegroundColor = ForegroundColor;
+                    Write("]");
+                    return cellValue;
                 default:
                     Console.ForegroundColor = ForegroundColor;
                     Write("[");
@@ -141,10 +151,10 @@ namespace Shuffle.Model
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        private static char GetLetterFromX(int x) => (char) x;
+        public char GetLetterFromX(int x) => (char) x;
 
         /// <summary>
-        /// Set a cell value.
+        /// Set a cell value by providing cell XY coordinates
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -156,9 +166,20 @@ namespace Shuffle.Model
         }
 
         /// <summary>
+        /// Set a cell value by providing position object
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="position"></param>
+        public void SetCell(Position position, CellStatus value)
+        {
+            Cells[position.X, position.Y] = (int) value;
+            Logger.Info($"Cell {position.X},{position.Y} set to status {value}");
+        }
+
+        /// <summary>
         /// Set the player start position
         /// </summary>
-        private void PlacePlayerStartPosition()
+        public void PlacePlayerStartPosition()
         {
             Position startPosition = new Position(7, 0);
             SetCell(startPosition.X, startPosition.Y, CellStatus.Player);
@@ -171,9 +192,9 @@ namespace Shuffle.Model
         /// Min of 2 so game is always able to be lost.
         /// </summary>
         /// <returns>Integer for Number of Mines</returns>
-        private int GenerateMines()
+        public int GenerateMines()
         {
-            int mines = _random.Next(2, 6); //Minimum number of mines is two.
+            int mines = _random.Next(4, 8); //Minimum number of mines is two.
             Logger.Info($"{mines} Mines Generated");
             return mines;
         }
@@ -182,7 +203,7 @@ namespace Shuffle.Model
         /// Place mines in random cell locations on the board.
         /// </summary>
         /// <param name="mines"></param>
-        private void PlaceMines(int mines)
+        public void PlaceMines(int mines)
         {
             for (int i = 0; i < mines; i++)
             {
@@ -198,14 +219,80 @@ namespace Shuffle.Model
         }
 
         /// <summary>
+        /// Clear Cell. Set to Empty or to Mine if player landed on a mine.
+        /// </summary>
+        /// <param name="position"></param>
+        public void ClearCell(Position position)
+        {
+            switch (Cells[position.X, position.Y])
+            {
+                case (int) CellStatus.PlayerIsHit:
+                    SetCell(position, CellStatus.Mine);
+                    break;
+                default:
+                    SetCell(position, CellStatus.Empty);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Move the player piece (Change Status to Player) to the given cell.
+        /// </summary>
+        /// <param name="position"></param>
+        public void MoveToCell(Position position) //Todo - Add tests for Mines and PlayerHit
+        {
+            int cellStatus = GetCellStatus(position);
+            if(cellStatus != (int) CellStatus.PlayerIsHit)
+            {
+                Cells[position.X, position.Y] = (int) CellStatus.Player;
+                Logger.Info($"Player moved to {position.X},{position.Y}.");
+            }
+            if(cellStatus == (int) CellStatus.Mine)
+            {
+                Cells[position.X, position.Y] = (int) CellStatus.PlayerIsHit;
+                Logger.Info($"Player moved to {position.X},{position.Y}.");
+            }
+           
+        }
+
+        /// <summary>
         /// Set the current known player position on the board.
         /// </summary>
         /// <param name="newPosition"></param>
         public void SetCurrentPlayerPosition(Position newPosition)
         {
-            //Position playerPosition = new Position(x, y);
             PlayerPosition = newPosition;
             Logger.Info($"Player Position Set to {PlayerPosition.X},{PlayerPosition.Y}.");
+        }
+
+        /// <summary>
+        /// Check if a cell contains a hidden mine.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns>True</returns>
+        public bool IsCellMined(Position position)
+        {
+            int cellStatus = GetCellStatus(position);
+            if (cellStatus == (int) CellStatus.HiddenMine) return true;
+            Logger.Info($"Cell {position.X}, {position.Y} a Mine.");
+            return false;
+        }
+
+        /// <summary>
+        /// Retrieve the status of a given cell.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public int GetCellStatus(Position position)
+        {
+            int cellStatus = Cells[position.X, position.Y];
+            Logger.Info($"Cell {position.X}, {position.Y} has a Status of: {cellStatus}");
+            return cellStatus;
+        }
+
+        public bool IsCellInTopRow(Position position)
+        {
+            return position.X == 0;
         }
 
         /// <summary>
@@ -214,12 +301,12 @@ namespace Shuffle.Model
         /// <param name="direction"></param>
         public string MovePlayer(Direction direction)
         {
-            //Todo - DRY PRINCIPLE. Try to make more modular
-            Direction moveDirection = direction;
+            
             bool isInBounds;
+            bool isCellMined;
             string moveMessage = null;
             Position newPosition;
-            switch (moveDirection)
+            switch (direction)
             {
                 default:
                     Logger.Warn("Move Direction is not supported");
@@ -229,16 +316,20 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y,
-                            CellStatus.Empty); //Todo - Create ClearCurrentPosition method
-                        SetCell(newPosition.X, newPosition.Y,
-                            CellStatus.Player); //Todo - Create MoveToNewPosition method
+                        isCellMined = IsCellMined(newPosition);
+                        if(isCellMined)
+                        {
+                            Explode(newPosition);
+                        }
+                        ClearCell(PlayerPosition);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
-                        moveMessage = $"You moved {moveDirection}.";
+                        moveMessage = $"You moved {direction}.";
+                        
                     }
                     else
                     {
-                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                        moveMessage = ($"You can't move {direction}. Try Again");
                     }
 
                     break;
@@ -247,14 +338,20 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
+                        isCellMined = IsCellMined(newPosition);
+                        if(isCellMined)
+                        {
+                            Explode(newPosition);
+                        }
+                        ClearCell(PlayerPosition);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
-                        moveMessage = $"You moved {moveDirection}.";
+                        moveMessage = $"You moved {direction}.";
+                        
                     }
                     else
                     {
-                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                        moveMessage = ($"You can't move {direction}. Try Again");
                     }
 
                     break;
@@ -263,14 +360,20 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
+                        isCellMined = IsCellMined(newPosition);
+                        if(isCellMined)
+                        {
+                            Explode(newPosition);
+                        }
+                        ClearCell(PlayerPosition);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
-                        moveMessage = $"You moved {moveDirection}.";
+                        moveMessage = $"You moved {direction}.";
+                        
                     }
                     else
                     {
-                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                        moveMessage = ($"You can't move {direction}. Try Again");
                     }
 
                     break;
@@ -279,14 +382,20 @@ namespace Shuffle.Model
                     isInBounds = newPosition.IsInBounds();
                     if (isInBounds)
                     {
-                        SetCell(PlayerPosition.X, PlayerPosition.Y, CellStatus.Empty);
-                        SetCell(newPosition.X, newPosition.Y, CellStatus.Player);
+                        isCellMined = IsCellMined(newPosition);
+                        if(isCellMined)
+                        {
+                            Explode(newPosition);
+                        }
+                        ClearCell(PlayerPosition);
+                        MoveToCell(newPosition);
                         SetCurrentPlayerPosition(newPosition);
-                        moveMessage = $"You moved {moveDirection}.";
+                        moveMessage = $"You moved {direction}.";
+                        
                     }
                     else
                     {
-                        moveMessage = ($"You can't move {moveDirection}. Try Again");
+                        moveMessage = ($"You can't move {direction}. Try Again");
                     }
 
                     break;
@@ -297,13 +406,24 @@ namespace Shuffle.Model
 
             WriteLine(moveMessage);
             WriteLine();
-            Logger.Info($"Player moved one cell {moveDirection} to {PlayerPosition.X},{PlayerPosition.Y}");
+            Logger.Info($"Player moved one cell {direction} to {PlayerPosition.X},{PlayerPosition.Y}");
             return moveMessage;
         }
 
-        //Todo - Add a IsMined method to check for a hidden mine.
-        //Todo - Add a method to 'Explode' a mine. Change Status from Hidden to Mine.
-        //Todo - Add a method to check if player position is in top row.
+        /// <summary>
+        /// Explode a hidden mine by changing the status from HiddenMine to PlayerIsHit
+        /// </summary>
+        /// <param name="position"></param>
+        public void Explode(Position position)
+        {
+            int cellStatus = GetCellStatus(position);
+            if (cellStatus == (int) CellStatus.HiddenMine)
+            {
+                SetCell(position, CellStatus.PlayerIsHit);
+                WriteLine("Oh Noes! You hit a mine, you lose a life.");
+                Logger.Info($"Player Landed on a Mine. Cell {position.X}, {position.Y}");
+            }
+        }
     }
 
     #endregion

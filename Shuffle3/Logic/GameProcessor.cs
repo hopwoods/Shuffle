@@ -37,7 +37,7 @@ namespace Shuffle.Logic
         {
             try
             {
-                Board gameBoard = _boardFactory.Get();
+                Board gameBoard = _boardFactory.CreateBoard();
                 Logger.Info("New Game Board created");
                 Player player = _playerFactory.CreatePlayer();
                 player.SetPlayerName(_userInterface.AskForPlayerName());
@@ -53,6 +53,7 @@ namespace Shuffle.Logic
                 {
                     throw new ApplicationException("Something went wrong while drawing the board");
                 }
+
                 _userInterface.NewLine();
                 _userInterface.RenderMessage("Ready Player One.");
                 Logger.Info("Turns Started");
@@ -112,20 +113,30 @@ namespace Shuffle.Logic
                         continue;
                 }
 
-                //Todo - Check for Mine (IMPLEMENT board.IsMined method)
-                //Todo - If Mined, Explode Mine and subtract a life (using board.Explode method / player.LoseLife method).
+                int cellStatus = gameBoard.GetCellStatus(gameBoard.PlayerPosition);
+                if (cellStatus == (int) CellStatus.PlayerIsHit)
+                {
+                    player.LoseLife();
+                }
+
                 Logger.Info("Player took a turn");
                 gameBoard.DrawBoard();
-                //Check if player is alive.
                 if (!player.IsPlayerAlive())
                 {
                     Logger.Info($"Player: {player.Name} Died. Ending Turns.");
                     _userInterface.RenderMessage($"{player.Name} you have no lives left! Game Over Man, Game Over.");
+                    _userInterface.NewLine();
                     break;
                 }
-                //Todo - Check if player has won. If so, end game, showing message to the player.
-                
-                _userInterface.NewLine();
+
+                bool hasPlayerWon = gameBoard.IsCellInTopRow(gameBoard.PlayerPosition);
+                if (hasPlayerWon)
+                {
+                    Logger.Info($"Player: {player.Name} Won the game. Ending Turns.");
+                    _userInterface.RenderMessage($"{player.Name} you Won! Congratualtions!");
+                    _userInterface.NewLine();
+                    break;
+                }
             }
         }
 

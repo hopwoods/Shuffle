@@ -24,6 +24,7 @@
             X = row;
             Y = col;
         }
+        //Todo - Add Position(Position) overload.
 
         /// <summary>
         /// Method for checking if a position is outside of the game board.

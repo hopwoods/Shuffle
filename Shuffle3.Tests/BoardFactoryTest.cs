@@ -13,7 +13,7 @@ namespace Shuffle.Tests
             //Arrange
             BoardFactory boardFactory = new BoardFactory();
             //Act
-            Board board = boardFactory.Get();
+            Board board = boardFactory.CreateBoard();
             //Assert
             Assert.That(board, Is.TypeOf(typeof(Board)));
         }

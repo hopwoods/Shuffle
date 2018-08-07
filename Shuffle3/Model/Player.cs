@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Shuffle.Model
+﻿namespace Shuffle.Model
 {
     public class Player : IPlayer
     {

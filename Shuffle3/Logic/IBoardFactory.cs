@@ -4,6 +4,10 @@ namespace Shuffle.Logic
 {
     public interface IBoardFactory
     {
-        Board Get();
+        /// <summary>
+        /// Generate a new game board.
+        /// </summary>
+        /// <returns>A Game Board Object</returns>
+        Board CreateBoard();
     }
 }
