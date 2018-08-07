@@ -89,7 +89,7 @@ namespace Shuffle.Model
 
             Console.ForegroundColor = Gray;
             WriteLine();
-            Console.WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
+            //WriteLine($"Player Position is {PlayerPosition.X},{PlayerPosition.Y}");
             Logger.Info("Board Drawn");
             return true;
         }
@@ -304,7 +304,7 @@ namespace Shuffle.Model
         {
             
             bool isInBounds;
-            bool isCellMined = false;
+            bool isCellMined;
             string moveMessage = null;
             Position newPosition;
             switch (direction)
