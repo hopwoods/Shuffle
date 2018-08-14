@@ -1,13 +1,16 @@
-﻿namespace Shuffle3.Model
+﻿namespace Shuffle.Model
 {
     public interface IUserInterface
     {
         string GetUserInput();
-        void RenderMessage(string message);
-        void NewLine();
         string AskForMove();
+        string AskForPlayerName();
+        string AskToPlayAgain();
+        bool ValidatePlayAgainResponse(string response);
         int ValidateMove(string requestedMove);
         void ClearScreen();
+        void RenderMessage(string message);
+        void NewLine();
     }
 }
 

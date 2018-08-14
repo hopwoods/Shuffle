@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Shuffle3.Logic;
-using Shuffle3.Model;
+using Shuffle.Logic;
+using Shuffle.Model;
 
-namespace Shuffle3.Tests
+namespace Shuffle.Tests
 {
     [TestFixture]
     public class BoardFactoryTest
@@ -13,7 +13,7 @@ namespace Shuffle3.Tests
             //Arrange
             BoardFactory boardFactory = new BoardFactory();
             //Act
-            Board board = boardFactory.Get();
+            Board board = boardFactory.CreateBoard();
             //Assert
             Assert.That(board, Is.TypeOf(typeof(Board)));
         }

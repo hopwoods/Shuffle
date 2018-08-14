@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Shuffle3.Logic;
-using Shuffle3.Model;
+using Shuffle.Logic;
+using Shuffle.Model;
+using Shuffle.Utilities;
+using static System.Console;
 
-namespace Shuffle3
+namespace Shuffle
 {
-    [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage] //Cannot Test Main Method
     internal static class Program
     {
         #region Fields
@@ -27,28 +29,32 @@ namespace Shuffle3
                 {
                     throw new ApplicationException("Error configuring console.");
                 }
-
-                GameFactory gameFactory = new GameFactory(new UserInterface(), new BoardFactory());
-                gameFactory.StartGame();
+                IUserInterface userInterface = new UserInterface(new Utility());
+                BoardFactory boardFactory = new BoardFactory();
+                PlayerFactory playerFactory = new PlayerFactory();
+                GameProcessor gameProcessor = new GameProcessor(userInterface, boardFactory, playerFactory);
+                gameProcessor.StartGame();
                 NLog.LogManager.Shutdown(); // Flush and close down internal threads and timers
             }
             catch (Exception exception)
             {
                 Logger.Error(exception, $"An Error has occued: {0}", exception.Message);
-                Console.WriteLine($"An Error Occured: {exception}");
-                Console.WriteLine("Press Any Key to Exit");
-                Console.ReadKey();
+                WriteLine($"An Error Occured: {exception}");
+                WriteLine("Press Any Key to Exit");
+                ReadKey();
             }
         }
 
         /// <summary>
         ///     Configure the console settings.
         /// </summary>
-        [ExcludeFromCodeCoverage]
         private static bool ConfigureConsole()
         {
-            Console.InputEncoding = Encoding.UTF8;
-            Console.Title = "Shuffle! by Stuart Hopwood";
+            InputEncoding = Encoding.Unicode;
+            OutputEncoding = Encoding.Unicode;
+            WindowWidth = 100;
+            WindowHeight = 25;
+            Title = "Shuffle! by Stuart Hopwood";
             Logger.Info("Console Configured");
             return true;
         }
