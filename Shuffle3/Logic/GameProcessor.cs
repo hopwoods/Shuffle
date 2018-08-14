@@ -40,6 +40,7 @@ namespace Shuffle.Logic
                 Board gameBoard = _boardFactory.CreateBoard();
                 Logger.Info("New Game Board created");
                 Player player = _playerFactory.CreatePlayer();
+                _userInterface.RenderMessage("Shuffle! New Game Started.");
                 player.SetPlayerName(_userInterface.AskForPlayerName());
                 player.SetLives();
                 Logger.Info("New Player Created");
@@ -59,9 +60,18 @@ namespace Shuffle.Logic
                 Logger.Info("Turns Started");
                 TakeTurns(gameBoard, player);
 
-                //Todo - Ask to Play Again.
-                //Todo - Validate Y/N
-                //Todo - If Y for New Game, Start New Game.
+                string askToPlayAgainResult = _userInterface.AskToPlayAgain();
+                bool isNewGameWanted = _userInterface.ValidatePlayAgainResponse(askToPlayAgainResult);
+                if(isNewGameWanted)
+                {
+                    _userInterface.ClearScreen();
+                    StartGame();
+                }
+                else
+                {
+                    _userInterface.ClearScreen();
+                    _userInterface.RenderMessage($"Thanks for playing {player.Name}. Press any key to exit and press enter");
+                }
                 _userInterface.GetUserInput();
             }
             catch (Exception exception)

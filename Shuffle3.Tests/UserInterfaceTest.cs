@@ -73,5 +73,33 @@ namespace Shuffle.Tests
             //Assert
             Assert.That(result, Is.EqualTo((int) Direction.Invalid));
         }
+
+        [Test]
+        public void ValidatePlayAgainResponse_ShouldReturnTrue()
+        {
+            //Arrange
+            UserInterface userInterface = new UserInterface(_utility);
+
+            //Act
+            bool result = userInterface.ValidatePlayAgainResponse("Y");
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [TestCase("N")]
+        [TestCase("X")]
+        [TestCase(" ")]
+        public void ValidatePlayAgainResponse_ShouldReturnFalse(string input)
+        {
+            //Arrange
+            UserInterface userInterface = new UserInterface(_utility);
+
+            //Act
+            bool result = userInterface.ValidatePlayAgainResponse(input);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
     }
 }
