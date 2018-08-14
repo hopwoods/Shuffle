@@ -11,7 +11,6 @@
         void ClearScreen();
         void RenderMessage(string message);
         void NewLine();
-        
     }
 }
 

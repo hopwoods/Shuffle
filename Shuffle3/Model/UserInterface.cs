@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using static System.Console;
 using static System.String;
 using Shuffle.Utilities;
@@ -119,7 +118,6 @@ namespace Shuffle.Model
             }
         }
 
-        //Todo - Ask to Play Again.
         [ExcludeFromCodeCoverage] //Cannot test for user input
         public string AskToPlayAgain()
         {

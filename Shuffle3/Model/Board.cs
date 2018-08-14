@@ -34,7 +34,7 @@ namespace Shuffle.Model
         {
             {CellStatus.Empty, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
             {CellStatus.HiddenMine, new CellFormat {DisplayCharacter = Convert.ToChar(" "), DisplayColour = Black}},
-            {CellStatus.Mine, new CellFormat {DisplayCharacter = Convert.ToChar("\u25CF"), DisplayColour = Red}},
+            {CellStatus.Mine, new CellFormat {DisplayCharacter = Convert.ToChar("\u2300"), DisplayColour = Red}},
             {CellStatus.Player, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Yellow}},
             {CellStatus.PlayerIsHit, new CellFormat {DisplayCharacter = Convert.ToChar("\u2302"), DisplayColour = Red}},
         };
